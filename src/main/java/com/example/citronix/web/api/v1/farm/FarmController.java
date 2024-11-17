@@ -37,6 +37,7 @@ public class FarmController {
     @PostMapping
     public ResponseEntity<FarmResponseVM> save(@RequestBody @Valid FarmVM farmVM){
         Farm farm = farmMapper.toEntity(farmVM);
+        //farm.setCreationDate(LocalDate.now());
         Farm savedFarm = farmService.save(farm);
         FarmResponseVM farmResponseVM = farmMapper.toResponseVM(savedFarm);
         return new ResponseEntity<>(farmResponseVM , HttpStatus.CREATED);
