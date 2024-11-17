@@ -2,7 +2,6 @@ package com.example.citronix.services.impl;
 
 import com.example.citronix.model.Farm;
 import com.example.citronix.repository.FarmRepository;
-import com.example.citronix.services.FarmSearchService;
 import com.example.citronix.services.FarmService;
 import com.example.citronix.services.dto.SearchDTO;
 import com.example.citronix.web.errors.exceptions.FarmAlreadyExistException;
@@ -11,6 +10,7 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDate;
 import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
@@ -20,11 +20,10 @@ import java.util.UUID;
 public class FarmServiceImpl implements FarmService {
 
     private final FarmRepository farmRepository;
-    private final FarmSearchService farmSearchService;
 
-    public FarmServiceImpl(FarmRepository farmRepository, FarmSearchService farmSearchService) {
+
+    public FarmServiceImpl(FarmRepository farmRepository) {
         this.farmRepository = farmRepository;
-        this.farmSearchService = farmSearchService;
     }
 
     @Override
@@ -33,7 +32,7 @@ public class FarmServiceImpl implements FarmService {
         if (farmOptional.isPresent()) {
             throw new FarmAlreadyExistException("Farm already exists");
         }
-
+        farm.setCreationDate(LocalDate.now());
         return farmRepository.save(farm);
     }
 
@@ -63,9 +62,6 @@ public class FarmServiceImpl implements FarmService {
         farmRepository.delete(farm);
     }
 
-    @Override
-    public List<SearchDTO> findByCriteria(SearchDTO searchDTO) {
-        return farmRepository.findByCriteria(searchDTO);
-    }
+
 
 }

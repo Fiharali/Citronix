@@ -9,5 +9,5 @@ import org.springframework.data.jpa.repository.Query;
 import java.util.UUID;
 
 public interface HarvestRepository extends JpaRepository<Harvest , UUID> {
-    boolean existsBySeasonAndHarvestDetails_Tree_Field_Id(Season season, UUID fieldUuid);
+    boolean existsBySeasonAndHarvestDetails_Tree_Field_Id(Season season, UUID fieldId);
 }

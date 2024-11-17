@@ -15,5 +15,5 @@ public interface FarmService {
     Farm findById(UUID id);
     Page<Farm> findAll(Pageable pageable);
     void delete(UUID id);
-    List<SearchDTO> findByCriteria(SearchDTO searchDTO);
+
 }

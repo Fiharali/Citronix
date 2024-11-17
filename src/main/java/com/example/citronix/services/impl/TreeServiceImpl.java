@@ -24,8 +24,8 @@ public class TreeServiceImpl implements TreeService {
     }
 
     @Override
-    public Tree save(UUID fieldUuid, Tree tree) {
-        Field field = fieldRepository.findById(fieldUuid)
+    public Tree save(UUID fieldId, Tree tree) {
+        Field field = fieldRepository.findById(fieldId)
             .orElseThrow(() -> new IllegalArgumentException("Field not found"));
 
         if (!tree.isPlantingSeason()) {
@@ -33,7 +33,7 @@ public class TreeServiceImpl implements TreeService {
         }
 
         double maxTrees = field.getArea() * 100;
-        long currentTreeCount = treeRepository.countByFieldUuid(fieldUuid);
+        long currentTreeCount = treeRepository.countByFieldId(fieldId);
         if (currentTreeCount >= maxTrees) {
             throw new IllegalArgumentException("Field has reached the maximum tree density.");
         }
@@ -44,12 +44,12 @@ public class TreeServiceImpl implements TreeService {
     }
 
     @Override
-    public List<Tree> findAllTreesByField(UUID fieldUuid) {
-        return treeRepository.findAllByFieldUuid(fieldUuid);
+    public List<Tree> findAllTreesByField(UUID fieldId) {
+        return treeRepository.findAllByFieldId(fieldId);
     }
 
     @Override
-    public void delete(UUID uuid) {
-        treeRepository.deleteById(uuid);
+    public void delete(UUID id) {
+        treeRepository.deleteById(id);
     }
 }

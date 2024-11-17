@@ -22,6 +22,6 @@ public interface FarmRepository extends JpaRepository<Farm , UUID> {
     @Query("SELECT f FROM Farm f WHERE f.totalArea >= :minArea")
     List<Farm> findByMinimumArea(double minArea);
 
-    List<SearchDTO> findByCriteria(SearchDTO searchDTO);
+
 
 }

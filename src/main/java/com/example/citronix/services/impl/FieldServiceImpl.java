@@ -6,6 +6,7 @@ import com.example.citronix.repository.FarmRepository;
 import com.example.citronix.repository.FieldRepository;
 import com.example.citronix.services.FarmService;
 import com.example.citronix.services.FieldService;
+import com.example.citronix.web.errors.exceptions.ResourceNotFoundException;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
@@ -25,9 +26,9 @@ public class FieldServiceImpl implements FieldService {
     }
 
     @Override
-    public Field save(UUID farmUuid, Field field) {
-        Farm farm = farmRepository.findById(farmUuid).orElseThrow(() ->
-            new RuntimeException("Farm not found"));
+    public Field save(UUID farmId, Field field) {
+        Farm farm = farmRepository.findById(farmId).orElseThrow(() ->
+            new ResourceNotFoundException("Farm not found"));
 
         validateFieldConstraints(farm, field);
 
@@ -36,8 +37,8 @@ public class FieldServiceImpl implements FieldService {
     }
 
     @Override
-    public Field update(UUID fieldUuid, Field field) {
-        Field existingField = fieldRepository.findById(fieldUuid).orElseThrow(() ->
+    public Field update(UUID fieldId, Field field) {
+        Field existingField = fieldRepository.findById(fieldId).orElseThrow(() ->
             new RuntimeException("Field not found"));
 
         Farm farm = existingField.getFarm();
@@ -50,19 +51,19 @@ public class FieldServiceImpl implements FieldService {
     }
 
     @Override
-    public Field findById(UUID fieldUuid) {
-        return fieldRepository.findById(fieldUuid).orElseThrow(() ->
+    public Field findById(UUID fieldId) {
+        return fieldRepository.findById(fieldId).orElseThrow(() ->
             new RuntimeException("Field not found"));
     }
 
     @Override
-    public Page<Field> findAllByFarm(UUID farmUuid, Pageable pageable) {
-        return fieldRepository.findAllByFarmUuid(farmUuid, pageable);
+    public Page<Field> findAllByFarm(UUID farmId, Pageable pageable) {
+        return fieldRepository.findAllByFarmId(farmId, pageable);
     }
 
     @Override
-    public void delete(UUID fieldUuid) {
-        Field field = fieldRepository.findById(fieldUuid).orElseThrow(() ->
+    public void delete(UUID fieldId) {
+        Field field = fieldRepository.findById(fieldId).orElseThrow(() ->
             new RuntimeException("Field not found"));
         fieldRepository.delete(field);
     }

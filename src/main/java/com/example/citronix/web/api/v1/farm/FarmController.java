@@ -70,22 +70,5 @@ public class FarmController {
         return new ResponseEntity<>(farmResponseVM , HttpStatus.OK);
     }
 
-    @GetMapping("/search")
-    public ResponseEntity<List<SearchDTO>> searchFarm(
-        @RequestParam(required = false) String name,
-        @RequestParam(required = false) String location,
-        @RequestParam(required = false) String creationDate){
 
-        LocalDate creationDateParsed = null;
-        if (StringUtils.hasText(creationDate)) {
-            try {
-                creationDateParsed = LocalDate.parse(creationDate);
-            } catch (Exception e) {
-                return ResponseEntity.badRequest().body(null);
-            }
-        }
-        SearchDTO searchDTO = new SearchDTO(name, location, creationDateParsed);
-        List<SearchDTO> farms = farmService.findByCriteria(searchDTO);
-        return ResponseEntity.ok(farms);
-    }
 }

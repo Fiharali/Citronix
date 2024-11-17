@@ -27,10 +27,10 @@ public class FieldController {
         this.fieldMapper = fieldMapper;
     }
 
-    @PostMapping("{farmUuid}/save")
-    public ResponseEntity<FieldResponseVM> save(@PathVariable UUID farmUuid, @RequestBody @Valid FieldVM fieldVM) {
+    @PostMapping
+    public ResponseEntity<FieldResponseVM> save( @RequestBody @Valid FieldVM fieldVM) {
         Field field = fieldMapper.toEntity(fieldVM);
-        Field savedField = fieldService.save(farmUuid, field);
+        Field savedField = fieldService.save(fieldVM.getFarmId(), field);
         FieldResponseVM response = fieldMapper.toResponseVM(savedField);
         return new ResponseEntity<>(response, HttpStatus.CREATED);
     }
