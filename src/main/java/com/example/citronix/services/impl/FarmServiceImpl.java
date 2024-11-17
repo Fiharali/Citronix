@@ -65,7 +65,7 @@ public class FarmServiceImpl implements FarmService {
 
     @Override
     public List<SearchDTO> findByCriteria(SearchDTO searchDTO) {
-        return farmSearchService.findByCriteria(searchDTO);
+        return farmRepository.findByCriteria(searchDTO);
     }
 
 }
