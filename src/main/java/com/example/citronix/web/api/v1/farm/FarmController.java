@@ -9,6 +9,7 @@ import com.example.citronix.web.vm.farm.FarmVM;
 import com.example.citronix.web.vm.mapper.FarmMapper;
 import com.example.citronix.web.vm.search.FarmSearchVM;
 import jakarta.validation.Valid;
+import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
@@ -22,16 +23,12 @@ import java.util.UUID;
 
 @RestController
 @RequestMapping("/api/v1/farms")
+@RequiredArgsConstructor
 public class FarmController {
 
 
     private final FarmService farmService;
     private final FarmMapper farmMapper;
-
-    public FarmController(FarmService farmService, FarmMapper farmMapper) {
-        this.farmService = farmService;
-        this.farmMapper = farmMapper;
-    }
 
 
     @PostMapping
