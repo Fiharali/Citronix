@@ -32,7 +32,7 @@ public class FarmServiceImpl implements FarmService {
         if (farmOptional.isPresent()) {
             throw new FarmAlreadyExistException("Farm already exists");
         }
-        farm.setCreationDate(LocalDate.now());
+
         return farmRepository.save(farm);
     }
 
