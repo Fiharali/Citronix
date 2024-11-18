@@ -16,6 +16,7 @@ import com.example.citronix.web.vm.FieldVm.FieldVM;
 import com.example.citronix.web.vm.FieldVm.FieldResponseVM;
 import com.example.citronix.web.vm.mapper.FieldMapper;
 
+import java.util.Optional;
 import java.util.UUID;
 
 @RestController
@@ -28,7 +29,7 @@ public class FieldController {
 
 
 
-    @PostMapping("/save")
+    @PostMapping
     public ResponseEntity<FieldResponseVM> save(@RequestBody @Valid FieldVM fieldVM) {
         Field field = fieldMapper.toEntity(fieldVM);
         Field savedField = fieldService.createField(fieldVM.getFarmId(), field);
@@ -36,29 +37,28 @@ public class FieldController {
         return new ResponseEntity<>(response, HttpStatus.CREATED);
     }
 
-    @PutMapping("/update/{field_uuid}")
-    public ResponseEntity<FieldResponseVM> update(@PathVariable UUID field_uuid, @RequestBody @Valid FieldVM fieldVM) {
-        Field updatedField = fieldService.updateField(field_uuid, fieldMapper.toEntity(fieldVM));
+    @PutMapping("/{id}")
+    public ResponseEntity<FieldResponseVM> update(@PathVariable UUID id, @RequestBody @Valid FieldVM fieldVM) {
+        Field updatedField = fieldService.updateField(id, fieldMapper.toEntity(fieldVM));
         FieldResponseVM response = fieldMapper.toResponse(updatedField);
         return new ResponseEntity<>(response, HttpStatus.OK);
     }
 
-    @DeleteMapping("/delete/{field_uuid}")
-    public ResponseEntity<String> delete(@PathVariable UUID field_uuid) {
-        fieldService.deleteField(field_uuid);
+    @DeleteMapping("/{id}")
+    public ResponseEntity<String> delete(@PathVariable UUID id) {
+        fieldService.deleteField(id);
         return new ResponseEntity<>("Field deleted successfully.", HttpStatus.OK);
     }
 
-    @GetMapping("/find/{field_uuid}")
-    public ResponseEntity<FieldResponseVM> findById(@PathVariable UUID field_uuid) {
-        Field field = fieldService.getFieldById(field_uuid)
-                .orElseThrow(() -> new ResourceNotFoundException("Field not found with ID: " + field_uuid));
-        FieldResponseVM response = fieldMapper.toResponse(field);
+    @GetMapping("/{id}")
+    public ResponseEntity<FieldResponseVM> findById(@PathVariable UUID id) {
+        Optional<Field> field = fieldService.getFieldById(id);
+        FieldResponseVM response = fieldMapper.toResponse(field.get());
         return new ResponseEntity<>(response, HttpStatus.OK);
     }
 
 
-    @GetMapping("/all")
+    @GetMapping
     public ResponseEntity<Page<FieldResponseVM>> findAll(Pageable pageable) {
         Page<Field> fields = fieldService.findAll(pageable);
         Page<FieldResponseVM> response = fields.map(fieldMapper::toResponse);
