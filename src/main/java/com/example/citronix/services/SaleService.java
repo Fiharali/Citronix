@@ -1,4 +1,4 @@
-package com.example.citronix.services.interfaces;
+package com.example.citronix.services;
 
 import com.example.citronix.domain.Sale;
 

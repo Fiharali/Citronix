@@ -1,4 +1,4 @@
-package com.example.citronix.web.vm.HarvestVm;
+package com.example.citronix.web.vm.harvest;
 
 import jakarta.validation.constraints.*;
 import lombok.Getter;

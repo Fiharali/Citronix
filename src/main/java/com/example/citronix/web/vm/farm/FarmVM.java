@@ -1,4 +1,4 @@
-package com.example.citronix.web.vm.FarmVm;
+package com.example.citronix.web.vm.farm;
 
 import jakarta.validation.constraints.*;
 import lombok.AllArgsConstructor;

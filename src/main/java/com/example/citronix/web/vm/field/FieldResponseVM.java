@@ -1,4 +1,4 @@
-package com.example.citronix.web.vm.FieldVm;
+package com.example.citronix.web.vm.field;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;

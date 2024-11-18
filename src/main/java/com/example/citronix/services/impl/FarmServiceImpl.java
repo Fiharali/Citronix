@@ -8,8 +8,8 @@ import org.springframework.stereotype.Service;
 import com.example.citronix.domain.Farm;
 import com.example.citronix.repositories.FarmRepository;
 import com.example.citronix.services.dto.FarmSearchDTO;
-import com.example.citronix.services.interfaces.FarmSearchService;
-import com.example.citronix.services.interfaces.FarmService;
+import com.example.citronix.services.FarmSearchService;
+import com.example.citronix.services.FarmService;
 
 import java.util.List;
 import java.util.Optional;

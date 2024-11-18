@@ -1,4 +1,4 @@
-package com.example.citronix.web.vm.ClientVm;
+package com.example.citronix.web.vm.client;
 
 
 import lombok.Data;

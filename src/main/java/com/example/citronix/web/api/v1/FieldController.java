@@ -1,6 +1,7 @@
 
 package com.example.citronix.web.api.v1;
 
+import com.example.citronix.services.FieldService;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
@@ -9,10 +10,8 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import com.example.citronix.domain.Field;
-import com.example.citronix.exceptions.ResourceNotFoundException;
-import com.example.citronix.services.interfaces.FieldService;
-import com.example.citronix.web.vm.FieldVm.FieldVM;
-import com.example.citronix.web.vm.FieldVm.FieldResponseVM;
+import com.example.citronix.web.vm.field.FieldVM;
+import com.example.citronix.web.vm.field.FieldResponseVM;
 import com.example.citronix.web.vm.mapper.FieldMapper;
 
 import java.util.Optional;

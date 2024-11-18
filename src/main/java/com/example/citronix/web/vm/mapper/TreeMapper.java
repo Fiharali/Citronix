@@ -4,11 +4,10 @@ import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
 import org.mapstruct.factory.Mappers;
 import com.example.citronix.domain.Tree;
-import com.example.citronix.web.vm.TreeVm.TreeResponseVM;
-import com.example.citronix.web.vm.TreeVm.TreeVM;
+import com.example.citronix.web.vm.tree.TreeResponseVM;
+import com.example.citronix.web.vm.tree.TreeVM;
 
 import java.util.List;
-import java.util.UUID;
 
 @Mapper(componentModel = "spring")
 public interface TreeMapper {

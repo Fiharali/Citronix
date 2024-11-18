@@ -8,9 +8,9 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import com.example.citronix.domain.Harvest;
 import com.example.citronix.domain.HarvestDetail;
-import com.example.citronix.services.interfaces.HarvestService;
-import com.example.citronix.web.vm.HarvestVm.HarvestVM;
-import com.example.citronix.web.vm.HarvestVm.HarvestResponseVM;
+import com.example.citronix.services.HarvestService;
+import com.example.citronix.web.vm.harvest.HarvestVM;
+import com.example.citronix.web.vm.harvest.HarvestResponseVM;
 import com.example.citronix.web.vm.mapper.HarvestMapper;
 
 import java.util.List;

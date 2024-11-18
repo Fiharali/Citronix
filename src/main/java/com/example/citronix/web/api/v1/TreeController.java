@@ -7,9 +7,9 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import com.example.citronix.domain.Tree;
-import com.example.citronix.services.interfaces.TreeService;
-import com.example.citronix.web.vm.TreeVm.TreeVM;
-import com.example.citronix.web.vm.TreeVm.TreeResponseVM;
+import com.example.citronix.services.TreeService;
+import com.example.citronix.web.vm.tree.TreeVM;
+import com.example.citronix.web.vm.tree.TreeResponseVM;
 import com.example.citronix.web.vm.mapper.TreeMapper;
 
 import java.util.List;

@@ -5,10 +5,10 @@ import org.mapstruct.Mapping;
 import org.mapstruct.factory.Mappers;
 import com.example.citronix.domain.Harvest;
 import com.example.citronix.domain.HarvestDetail;
-import com.example.citronix.web.vm.HarvestVm.HarvestResponseVM;
-import com.example.citronix.web.vm.HarvestVm.HarvestVM;
-import com.example.citronix.web.vm.HarvestVm.HarvestDetailResponseVM;
-import com.example.citronix.web.vm.HarvestVm.HarvestDetailVM;
+import com.example.citronix.web.vm.harvest.HarvestResponseVM;
+import com.example.citronix.web.vm.harvest.HarvestVM;
+import com.example.citronix.web.vm.harvest.HarvestDetailResponseVM;
+import com.example.citronix.web.vm.harvest.HarvestDetailVM;
 
 import java.util.List;
 

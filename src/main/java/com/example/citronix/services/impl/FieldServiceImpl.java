@@ -8,7 +8,7 @@ import com.example.citronix.domain.Field;
 import com.example.citronix.domain.Farm;
 import com.example.citronix.repositories.FieldRepository;
 import com.example.citronix.repositories.FarmRepository;
-import com.example.citronix.services.interfaces.FieldService;
+import com.example.citronix.services.FieldService;
 
 import java.util.List;
 import java.util.Optional;

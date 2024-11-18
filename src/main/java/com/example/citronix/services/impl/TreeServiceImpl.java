@@ -6,10 +6,9 @@ import com.example.citronix.domain.Field;
 import com.example.citronix.domain.Tree;
 import com.example.citronix.repositories.FieldRepository;
 import com.example.citronix.repositories.TreeRepository;
-import com.example.citronix.services.interfaces.TreeService;
+import com.example.citronix.services.TreeService;
 
 import java.util.List;
-import java.util.Optional;
 import java.util.UUID;
 
 @Service
