@@ -4,7 +4,6 @@ import com.example.citronix.model.Farm;
 import com.example.citronix.model.Field;
 import com.example.citronix.repository.FarmRepository;
 import com.example.citronix.repository.FieldRepository;
-import com.example.citronix.services.FarmService;
 import com.example.citronix.services.FieldService;
 import com.example.citronix.web.errors.exceptions.ResourceNotFoundException;
 import org.springframework.data.domain.Page;

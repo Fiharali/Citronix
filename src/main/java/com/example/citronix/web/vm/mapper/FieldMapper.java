@@ -4,11 +4,9 @@ package com.example.citronix.web.vm.mapper;
 import com.example.citronix.model.Field;
 import com.example.citronix.web.vm.field.FieldResponseVM;
 import com.example.citronix.web.vm.field.FieldVM;
-import org.mapstruct.Mapper;
 import org.springframework.stereotype.Component;
 
 import java.util.List;
-import java.util.stream.Collector;
 import java.util.stream.Collectors;
 
 
