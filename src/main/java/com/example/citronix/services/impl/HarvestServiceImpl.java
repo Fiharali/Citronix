@@ -8,7 +8,6 @@ import com.example.citronix.repository.HarvestDetailRepository;
 import com.example.citronix.repository.HarvestRepository;
 import com.example.citronix.repository.TreeRepository;
 import com.example.citronix.services.HarvestService;
-import com.example.citronix.services.TreeService;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDate;
