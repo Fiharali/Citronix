@@ -13,12 +13,12 @@ import java.util.UUID;
 @Setter
 public class HarvestVM {
 
-    @NotNull(message = "Field ID is required.") // Ensures the fieldId is not null
+    @NotNull(message = "Field ID is required.")
     private UUID fieldId;
 
-    @NotNull(message = "Season is required.") // Ensures the season is provided
+    @NotNull(message = "Season is required.")
     private Season season;
 
-    @NotEmpty(message = "Harvest details cannot be empty.") // Ensures the harvestDetails list is not empty
-    private List<@Valid HarvestDetailVM> harvestDetails; // Validates each item in the list as well
+    @NotEmpty(message = "Harvest details cannot be empty.")
+    private List<@Valid HarvestDetailVM> harvestDetails;
 }

@@ -1,5 +1,7 @@
 package com.example.citronix.services.impl;
 
+import com.example.citronix.exceptions.ResourceNotFoundException;
+import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
@@ -14,15 +16,13 @@ import java.util.Optional;
 import java.util.UUID;
 
 @Service
+@RequiredArgsConstructor
 public class FarmServiceImpl implements FarmService {
 
     private final FarmRepository farmRepository;
     private final FarmSearchService farmSearchService;
 
-    public FarmServiceImpl(FarmRepository farmRepository, FarmSearchService farmSearchService) {
-        this.farmRepository = farmRepository;
-        this.farmSearchService = farmSearchService;
-    }
+
 
 
     @Override
@@ -31,7 +31,7 @@ public class FarmServiceImpl implements FarmService {
         if (farmOptional.isPresent()) {
             throw new RuntimeException("Farm already exists");
         }
-        // Log the farm details before saving
+
         System.out.println("Saving Farm: " + farm);
         Farm savedFarm = farmRepository.save(farm);
         // Log the saved farm details
@@ -47,7 +47,12 @@ public class FarmServiceImpl implements FarmService {
 
     @Override
     public Optional<Farm> getFarmById(UUID id) {
-        return farmRepository.findById(id);
+
+        Farm farm =  farmRepository.findById(id);
+        if (farm == null) {
+            throw new ResourceNotFoundException("Farm not found with id: " + id);
+        }
+        return farm;
     }
 
 
@@ -70,7 +75,7 @@ public class FarmServiceImpl implements FarmService {
             farmRepository.deleteById(id);
             return true;
         } else {
-            return false;
+            throw  new ResourceNotFoundException("Farm not found with id: " + id);
         }
     }
 
