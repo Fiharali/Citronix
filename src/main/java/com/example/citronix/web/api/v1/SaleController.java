@@ -1,7 +1,11 @@
 package com.example.citronix.web.api.v1;
 
 
+import com.example.citronix.domain.Sale;
 import com.example.citronix.services.SaleService;
+import com.example.citronix.web.vm.mapper.SaleMapper;
+import com.example.citronix.web.vm.sale.SaleResponseVM;
+import com.example.citronix.web.vm.sale.SaleVM;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
