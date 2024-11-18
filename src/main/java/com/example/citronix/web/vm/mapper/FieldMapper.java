@@ -1,55 +1,29 @@
 package com.example.citronix.web.vm.mapper;
 
+import org.mapstruct.Mapper;
+import org.mapstruct.Mapping;
+import org.mapstruct.factory.Mappers;
+import com.example.citronix.domain.Field;
+import com.example.citronix.web.vm.FieldVm.FieldResponseVM;
+import com.example.citronix.web.vm.FieldVm.FieldVM;
 
-import com.example.citronix.model.Field;
-import com.example.citronix.web.vm.field.FieldResponseVM;
-import com.example.citronix.web.vm.field.FieldVM;
-import org.springframework.stereotype.Component;
+import java.util.UUID;
 
-import java.util.List;
-import java.util.stream.Collectors;
+@Mapper(componentModel = "spring")
+public interface FieldMapper {
 
+    FieldMapper INSTANCE = Mappers.getMapper(FieldMapper.class);
 
-@Component
-public class FieldMapper {
+    @Mapping(target = "id", ignore = true)
+    @Mapping(target = "farm", ignore = true)
+    @Mapping(target = "maxTrees", ignore = true)
+    Field toEntity(FieldVM fieldVM);
 
-    public Field toEntity(FieldVM fieldVM) {
-        Field field = new Field();
-        field.setArea(fieldVM.getArea());
-        return field;
-    }
+    @Mapping(source = "farm.id", target = "farmId") // Removed qualifiedByName
+    FieldResponseVM toResponse(Field field);
 
-    public FieldResponseVM toResponseVM(Field field) {
-        if (field == null || field.getFarm() == null) {
-            return null;
-        }
-
-        FieldResponseVM.FieldVM fieldVM = new FieldResponseVM.FieldVM(
-            field.getId().toString(),
-            field.getArea()
-        );
-
-        return new FieldResponseVM(
-            field.getFarm().getName(),
-            field.getFarm().getTotalArea(),
-            List.of(fieldVM)
-        );
-    }
-
-    public FieldResponseVM toResponseVMForAll(List<Field> fields) {
-        if (fields.isEmpty()) {
-            return null;
-        }
-
-        var farm = fields.get(0).getFarm();
-        List<FieldResponseVM.FieldVM> fieldVMs = fields.stream()
-            .map(f -> new FieldResponseVM.FieldVM(f.getId().toString(), f.getArea()))
-            .collect(Collectors.toList());
-
-        return new FieldResponseVM(
-            farm.getName(),
-            farm.getTotalArea(),
-            fieldVMs
-        );
+    // Custom method directly used in the mapper
+    default UUID mapFarmId(Field field) {
+        return field.getFarm() != null ? field.getFarm().getId() : null;
     }
 }

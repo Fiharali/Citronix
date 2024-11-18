@@ -1,19 +1,17 @@
 package com.example.citronix.services.impl;
 
-import com.example.citronix.model.Field;
-import com.example.citronix.model.Tree;
-import com.example.citronix.repository.FieldRepository;
-import com.example.citronix.repository.TreeRepository;
-import com.example.citronix.services.TreeService;
 import org.springframework.stereotype.Service;
+import com.example.citronix.domain.Field;
+import com.example.citronix.domain.Tree;
+import com.example.citronix.repositories.FieldRepository;
+import com.example.citronix.repositories.TreeRepository;
+import com.example.citronix.services.interfaces.TreeService;
 
-import java.util.List;
+import java.util.Optional;
 import java.util.UUID;
-
 
 @Service
 public class TreeServiceImpl implements TreeService {
-
 
     private final TreeRepository treeRepository;
     private final FieldRepository fieldRepository;
@@ -24,32 +22,75 @@ public class TreeServiceImpl implements TreeService {
     }
 
     @Override
-    public Tree save(UUID fieldId, Tree tree) {
+    public Tree createTree(UUID fieldId, Tree tree) {
         Field field = fieldRepository.findById(fieldId)
-            .orElseThrow(() -> new IllegalArgumentException("Field not found"));
+                .orElseThrow(() -> new IllegalArgumentException("Field not found"));
 
         if (!tree.isPlantingSeason()) {
-            throw new IllegalArgumentException("Trees can only be planted between March and May.");
+            throw new IllegalArgumentException("Tree planting must be between March and May.");
         }
+        double totalFieldArea = fieldRepository.findById(fieldId)
+                .map(Field::getArea)
+                .orElseThrow(() -> new IllegalArgumentException("Field not found"));
 
-        double maxTrees = field.getArea() * 100;
-        long currentTreeCount = treeRepository.countByFieldId(fieldId);
-        if (currentTreeCount >= maxTrees) {
-            throw new IllegalArgumentException("Field has reached the maximum tree density.");
+        long numberOfTrees = treeRepository.countByFieldId(fieldId);
+        double treeDensity = numberOfTrees / totalFieldArea;
+
+        if (treeDensity > 100) {
+            throw new IllegalArgumentException("Field exceeds tree density limit of 100 trees per hectare.");
         }
 
         tree.setField(field);
-
         return treeRepository.save(tree);
     }
 
+
     @Override
-    public List<Tree> findAllTreesByField(UUID fieldId) {
-        return treeRepository.findAllByFieldId(fieldId);
+    public Tree updateTree(UUID treeId, Tree updatedTree) {
+        Tree existingTree = treeRepository.findById(treeId)
+                .orElseThrow(() -> new IllegalArgumentException("Tree not found"));
+
+        if (!updatedTree.isPlantingSeason()) {
+            throw new IllegalArgumentException("Tree planting must be between March and May.");
+        }
+
+        if (updatedTree.getPlantingDate() != null && !updatedTree.getPlantingDate().equals(existingTree.getPlantingDate())) {
+            existingTree.setPlantingDate(updatedTree.getPlantingDate());
+        }
+
+        if (updatedTree.getField() != null && !updatedTree.getField().equals(existingTree.getField())) {
+            Field field = fieldRepository.findById(updatedTree.getField().getId())
+                    .orElseThrow(() -> new IllegalArgumentException("Field not found"));
+            existingTree.setField(field);
+        }
+
+        Field field = existingTree.getField();
+        double totalFieldArea = field.getArea();
+        long numberOfTrees = treeRepository.countByFieldId(field.getId());
+        double treeDensity = numberOfTrees / totalFieldArea;
+
+        if (treeDensity > 100) {
+            throw new IllegalArgumentException("Field exceeds tree density limit of 100 trees per hectare after update.");
+        }
+        return treeRepository.save(existingTree);
     }
 
     @Override
-    public void delete(UUID id) {
-        treeRepository.deleteById(id);
+    public void deleteTree(UUID treeId) {
+        if (!treeRepository.existsById(treeId)) {
+            throw new IllegalArgumentException("Tree not found");
+        }
+        treeRepository.deleteById(treeId);
     }
+
+    @Override
+    public Optional<Tree> getTreeById(UUID treeId) {
+        return treeRepository.findById(treeId);
+    }
+
+    @Override
+    public Iterable<Tree> getTreesByField(UUID fieldId) {
+        return treeRepository.findByFieldId(fieldId);
+    }
+
 }

@@ -208,4 +208,3 @@ databaseChangeLog:
             constraintName: FK_TREE_ON_FIELD
             referencedColumnNames: id
             referencedTableName: field
-
