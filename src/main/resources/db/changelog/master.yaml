@@ -1,6 +1,6 @@
 databaseChangeLog:
   - include:
-      file: classpath:db/changelog/2024/11/17-01-changelog.yaml
+      file: db/changelog/2024/11/18-01-changelog.yaml
 
 
 

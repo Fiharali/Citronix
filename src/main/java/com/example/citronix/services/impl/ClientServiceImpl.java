@@ -18,18 +18,11 @@ public class ClientServiceImpl implements ClientService {
     }
 
     @Override
-    public Client createClient(String name, String email, String phoneNumber) {
+    public Client createClient(Client client) {
 
-        if (clientRepository.existsByEmail(email)) {
+        if (clientRepository.existsByEmail(client.getEmail())) {
             throw new IllegalArgumentException("A client with this email already exists.");
         }
-
-
-        Client client = Client.builder()
-                .name(name)
-                .email(email)
-                .phoneNumber(phoneNumber)
-                .build();
 
         return clientRepository.save(client);
     }
@@ -46,22 +39,19 @@ public class ClientServiceImpl implements ClientService {
     }
 
     @Override
-    public Client updateClient(UUID clientId, String name, String email, String phoneNumber) {
+    public Client updateClient(UUID id , Client client ) {
 
-        Client client = clientRepository.findById(clientId)
+        Client clientExist = clientRepository.findById(id)
                 .orElseThrow(() -> new IllegalArgumentException("Client not found"));
 
-
-        if (!client.getEmail().equals(email) && clientRepository.existsByEmail(email)) {
+        if (!client.getEmail().equals(client.getEmail()) && clientRepository.existsByEmail(client.getEmail())) {
             throw new IllegalArgumentException("A client with this email already exists.");
         }
+        clientExist.setEmail(client.getEmail());
+        clientExist.setName(client.getName());
+        clientExist.setPhoneNumber(client.getName());
 
-
-        client.setName(name);
-        client.setEmail(email);
-        client.setPhoneNumber(phoneNumber);
-
-        return clientRepository.save(client);
+        return clientRepository.save(clientExist);
     }
 
     @Override

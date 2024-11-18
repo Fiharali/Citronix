@@ -24,7 +24,7 @@ public class Sale {
 
     private double quantity;
 
-    private double revenue; // Calculated as quantity * unitPrice
+    private double revenue;
 
     @ManyToOne
     @JoinColumn(name = "client_id", nullable = false)

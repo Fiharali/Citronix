@@ -1,6 +1,30 @@
 databaseChangeLog:
   - changeSet:
-      id: 1731853465230-1
+      id: 1731939216578-1
+      author: Youcode
+      objectQuotingStrategy: QUOTE_ONLY_RESERVED_WORDS
+      changes:
+        - createTable:
+            columns:
+              - column:
+                  constraints:
+                    nullable: false
+                    primaryKey: true
+                    primaryKeyName: pk_client
+                  name: id
+                  type: UUID
+              - column:
+                  name: name
+                  type: VARCHAR(255)
+              - column:
+                  name: email
+                  type: VARCHAR(255)
+              - column:
+                  name: phone_number
+                  type: VARCHAR(255)
+            tableName: client
+  - changeSet:
+      id: 1731939216578-2
       author: Youcode
       objectQuotingStrategy: QUOTE_ONLY_RESERVED_WORDS
       changes:
@@ -14,22 +38,28 @@ databaseChangeLog:
                   name: id
                   type: UUID
               - column:
+                  constraints:
+                    nullable: false
                   name: name
                   type: VARCHAR(255)
               - column:
+                  constraints:
+                    nullable: false
                   name: location
                   type: VARCHAR(255)
               - column:
                   constraints:
                     nullable: false
-                  name: total_area
+                  name: area
                   type: DOUBLE
               - column:
+                  constraints:
+                    nullable: false
                   name: creation_date
                   type: DATE
             tableName: farm
   - changeSet:
-      id: 1731853465230-2
+      id: 1731939216578-3
       author: Youcode
       objectQuotingStrategy: QUOTE_ONLY_RESERVED_WORDS
       changes:
@@ -46,13 +76,20 @@ databaseChangeLog:
                   constraints:
                     nullable: false
                   name: area
-                  type: DOUBLE
+                  type: FLOAT
               - column:
+                  constraints:
+                    nullable: false
+                  name: max_trees
+                  type: INT
+              - column:
+                  constraints:
+                    nullable: false
                   name: farm_id
                   type: UUID
             tableName: field
   - changeSet:
-      id: 1731853465230-3
+      id: 1731939216578-4
       author: Youcode
       objectQuotingStrategy: QUOTE_ONLY_RESERVED_WORDS
       changes:
@@ -66,19 +103,24 @@ databaseChangeLog:
                   name: id
                   type: UUID
               - column:
+                  constraints:
+                    nullable: false
+                  name: field_id
+                  type: UUID
+              - column:
                   name: harvest_date
                   type: DATE
+              - column:
+                  name: season
+                  type: VARCHAR(255)
               - column:
                   constraints:
                     nullable: false
                   name: total_quantity
                   type: DOUBLE
-              - column:
-                  name: season
-                  type: VARCHAR(255)
             tableName: harvest
   - changeSet:
-      id: 1731853465230-4
+      id: 1731939216578-5
       author: Youcode
       objectQuotingStrategy: QUOTE_ONLY_RESERVED_WORDS
       changes:
@@ -94,17 +136,21 @@ databaseChangeLog:
               - column:
                   constraints:
                     nullable: false
-                  name: quantity
-                  type: DOUBLE
+                  name: tree_id
+                  type: UUID
               - column:
+                  constraints:
+                    nullable: false
                   name: harvest_id
                   type: UUID
               - column:
-                  name: tree_id
-                  type: UUID
+                  constraints:
+                    nullable: false
+                  name: quantity
+                  type: DOUBLE
             tableName: harvest_detail
   - changeSet:
-      id: 1731853465230-5
+      id: 1731939216578-6
       author: Youcode
       objectQuotingStrategy: QUOTE_ONLY_RESERVED_WORDS
       changes:
@@ -126,14 +172,28 @@ databaseChangeLog:
                   name: unit_price
                   type: DOUBLE
               - column:
-                  name: client
-                  type: VARCHAR(255)
+                  constraints:
+                    nullable: false
+                  name: quantity
+                  type: DOUBLE
               - column:
+                  constraints:
+                    nullable: false
+                  name: revenue
+                  type: DOUBLE
+              - column:
+                  constraints:
+                    nullable: false
+                  name: client_id
+                  type: UUID
+              - column:
+                  constraints:
+                    nullable: false
                   name: harvest_id
                   type: UUID
             tableName: sale
   - changeSet:
-      id: 1731853465230-6
+      id: 1731939216578-7
       author: Youcode
       objectQuotingStrategy: QUOTE_ONLY_RESERVED_WORDS
       changes:
@@ -150,11 +210,13 @@ databaseChangeLog:
                   name: planting_date
                   type: DATE
               - column:
+                  constraints:
+                    nullable: false
                   name: field_id
                   type: UUID
             tableName: tree
   - changeSet:
-      id: 1731853465230-7
+      id: 1731939216578-8
       author: Youcode
       objectQuotingStrategy: QUOTE_ONLY_RESERVED_WORDS
       changes:
@@ -165,7 +227,7 @@ databaseChangeLog:
             referencedColumnNames: id
             referencedTableName: farm
   - changeSet:
-      id: 1731853465230-8
+      id: 1731939216578-9
       author: Youcode
       objectQuotingStrategy: QUOTE_ONLY_RESERVED_WORDS
       changes:
@@ -176,7 +238,7 @@ databaseChangeLog:
             referencedColumnNames: id
             referencedTableName: harvest
   - changeSet:
-      id: 1731853465230-9
+      id: 1731939216578-10
       author: Youcode
       objectQuotingStrategy: QUOTE_ONLY_RESERVED_WORDS
       changes:
@@ -187,7 +249,29 @@ databaseChangeLog:
             referencedColumnNames: id
             referencedTableName: tree
   - changeSet:
-      id: 1731853465230-10
+      id: 1731939216578-11
+      author: Youcode
+      objectQuotingStrategy: QUOTE_ONLY_RESERVED_WORDS
+      changes:
+        - addForeignKeyConstraint:
+            baseColumnNames: field_id
+            baseTableName: harvest
+            constraintName: FK_HARVEST_ON_FIELD
+            referencedColumnNames: id
+            referencedTableName: field
+  - changeSet:
+      id: 1731939216578-12
+      author: Youcode
+      objectQuotingStrategy: QUOTE_ONLY_RESERVED_WORDS
+      changes:
+        - addForeignKeyConstraint:
+            baseColumnNames: client_id
+            baseTableName: sale
+            constraintName: FK_SALE_ON_CLIENT
+            referencedColumnNames: id
+            referencedTableName: client
+  - changeSet:
+      id: 1731939216578-13
       author: Youcode
       objectQuotingStrategy: QUOTE_ONLY_RESERVED_WORDS
       changes:
@@ -198,7 +282,7 @@ databaseChangeLog:
             referencedColumnNames: id
             referencedTableName: harvest
   - changeSet:
-      id: 1731853465230-11
+      id: 1731939216578-14
       author: Youcode
       objectQuotingStrategy: QUOTE_ONLY_RESERVED_WORDS
       changes:
@@ -208,3 +292,4 @@ databaseChangeLog:
             constraintName: FK_TREE_ON_FIELD
             referencedColumnNames: id
             referencedTableName: field
+

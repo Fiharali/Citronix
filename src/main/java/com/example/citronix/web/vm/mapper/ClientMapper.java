@@ -11,11 +11,11 @@ import java.util.List;
 @Mapper(componentModel = "spring")
 public interface ClientMapper {
 
-    ClientResponseVM clientToClientResponseVM(Client client);
+    ClientResponseVM toClientResponseVM(Client client);
 
     @Mapping(target = "id", ignore = true)
     Client clientVMToClient(ClientVM clientVM);
 
-    List<ClientResponseVM> clientsToClientResponseVMs(List<Client> clients);
+    List<ClientResponseVM> toClientResponseVMs(List<Client> clients);
 
 }

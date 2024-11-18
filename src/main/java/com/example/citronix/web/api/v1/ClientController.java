@@ -25,38 +25,38 @@ public class ClientController {
 
 
 
-    @PostMapping("/create")
+    @PostMapping
     public ResponseEntity<ClientResponseVM> createClient(@RequestBody @Valid ClientVM clientVM) {
         Client clientEntity = clientMapper.clientVMToClient(clientVM);
-        Client savedClient = clientService.createClient(clientEntity.getName(), clientEntity.getEmail(), clientEntity.getPhoneNumber());
-        ClientResponseVM response = clientMapper.clientToClientResponseVM(savedClient);
+        Client savedClient = clientService.createClient(clientEntity);
+        ClientResponseVM response = clientMapper.toClientResponseVM(savedClient);
         return new ResponseEntity<>(response, HttpStatus.CREATED);
     }
 
-    @GetMapping("/all")
+    @GetMapping
     public ResponseEntity<List<ClientResponseVM>> getAllClients() {
         List<Client> clients = clientService.getAllClients();
-        List<ClientResponseVM> responses = clientMapper.clientsToClientResponseVMs(clients);
+        List<ClientResponseVM> responses = clientMapper.toClientResponseVMs(clients);
         return new ResponseEntity<>(responses, HttpStatus.OK);
     }
 
-    @GetMapping("/{clientId}")
-    public ResponseEntity<ClientResponseVM> getClientById(@PathVariable UUID clientId) {
-        Client client = clientService.getClientById(clientId);
-        ClientResponseVM response = clientMapper.clientToClientResponseVM(client);
+    @GetMapping("/{id}")
+    public ResponseEntity<ClientResponseVM> getClientById(@PathVariable UUID id) {
+        Client client = clientService.getClientById(id);
+        ClientResponseVM response = clientMapper.toClientResponseVM(client);
         return new ResponseEntity<>(response, HttpStatus.OK);
     }
 
-    @PutMapping("/update/{clientId}")
-    public ResponseEntity<ClientResponseVM> updateClient(@PathVariable UUID clientId, @RequestBody @Valid ClientVM clientVM) {
-        Client updatedClient = clientService.updateClient(clientId, clientVM.getName(), clientVM.getEmail(), clientVM.getPhoneNumber());
-        ClientResponseVM response = clientMapper.clientToClientResponseVM(updatedClient);
+    @PutMapping("/{id}")
+    public ResponseEntity<ClientResponseVM> updateClient(@PathVariable UUID id, @RequestBody @Valid ClientVM clientVM) {
+        Client updatedClient = clientService.updateClient(id,clientMapper.clientVMToClient(clientVM));
+        ClientResponseVM response = clientMapper.toClientResponseVM(updatedClient);
         return new ResponseEntity<>(response, HttpStatus.OK);
     }
 
-    @DeleteMapping("/delete/{clientId}")
-    public ResponseEntity<String> deleteClient(@PathVariable UUID clientId) {
-        clientService.deleteClient(clientId);
+    @DeleteMapping("/{id}")
+    public ResponseEntity<String> deleteClient(@PathVariable UUID id) {
+        clientService.deleteClient(id);
         return new ResponseEntity<>("Client deleted successfully", HttpStatus.OK);
     }
 }

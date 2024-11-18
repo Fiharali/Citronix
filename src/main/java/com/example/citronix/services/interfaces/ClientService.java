@@ -7,13 +7,13 @@ import java.util.UUID;
 
 public interface ClientService {
 
-    Client createClient(String name, String email, String phoneNumber);
+    Client createClient(Client client);
 
     List<Client> getAllClients();
 
     Client getClientById(UUID clientId);
 
-    Client updateClient(UUID clientId, String name, String email, String phoneNumber);
+    Client updateClient(UUID id ,Client client);
 
     void deleteClient(UUID clientId);
 }
