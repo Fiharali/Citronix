@@ -1,5 +1,6 @@
 package com.example.citronix.services.impl;
 
+import com.example.citronix.exceptions.ResourceNotFoundException;
 import org.springframework.stereotype.Service;
 import com.example.citronix.domain.Field;
 import com.example.citronix.domain.Tree;
@@ -7,6 +8,7 @@ import com.example.citronix.repositories.FieldRepository;
 import com.example.citronix.repositories.TreeRepository;
 import com.example.citronix.services.interfaces.TreeService;
 
+import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
 
@@ -78,18 +80,19 @@ public class TreeServiceImpl implements TreeService {
     @Override
     public void deleteTree(UUID treeId) {
         if (!treeRepository.existsById(treeId)) {
-            throw new IllegalArgumentException("Tree not found");
+            throw new ResourceNotFoundException("Tree not found");
         }
         treeRepository.deleteById(treeId);
     }
 
     @Override
-    public Optional<Tree> getTreeById(UUID treeId) {
-        return treeRepository.findById(treeId);
+    public Tree getTreeById(UUID treeId) {
+        return treeRepository.findById(treeId).orElseThrow(()->
+                new ResourceNotFoundException("Tree not found"));
     }
 
     @Override
-    public Iterable<Tree> getTreesByField(UUID fieldId) {
+    public List<Tree> getTreesByField(UUID fieldId) {
         return treeRepository.findByFieldId(fieldId);
     }
 

@@ -34,7 +34,7 @@ public class FarmServiceImpl implements FarmService {
 
         System.out.println("Saving Farm: " + farm);
         Farm savedFarm = farmRepository.save(farm);
-        // Log the saved farm details
+
         System.out.println("Saved Farm: " + savedFarm);
         return savedFarm;
     }
@@ -48,8 +48,8 @@ public class FarmServiceImpl implements FarmService {
     @Override
     public Optional<Farm> getFarmById(UUID id) {
 
-        Farm farm =  farmRepository.findById(id);
-        if (farm == null) {
+        Optional<Farm> farm =  farmRepository.findById(id);
+        if (farm.isEmpty()) {
             throw new ResourceNotFoundException("Farm not found with id: " + id);
         }
         return farm;
