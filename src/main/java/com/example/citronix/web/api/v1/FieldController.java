@@ -1,4 +1,3 @@
-// File: org/youcode/citronix/web/api/v1/FieldController.java
 
 package com.example.citronix.web.api.v1;
 
