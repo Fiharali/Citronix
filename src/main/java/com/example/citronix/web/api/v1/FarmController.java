@@ -16,8 +16,7 @@ import com.example.citronix.web.vm.FarmVm.FarmVM;
 import com.example.citronix.web.vm.mapper.FarmMapper;
 
 import java.time.LocalDate;
-import java.util.List;
-import java.util.UUID;
+import java.util.*;
 
 @RestController
 @RequestMapping("/api/v1/farms")
@@ -29,7 +28,7 @@ public class FarmController {
 
 
 
-    @PostMapping("/save")
+    @PostMapping
     public ResponseEntity<FarmResponseVM> save(@RequestBody @Valid FarmVM farmVM) {
         Farm farm = farmMapper.toEntity(farmVM);
         Farm savedFarm = farmService.save(farm);
@@ -37,34 +36,36 @@ public class FarmController {
         return new ResponseEntity<>(farmResponseVM, HttpStatus.CREATED);
     }
 
-    @PutMapping("/update/{farm_uuid}")
+    @PutMapping("/{id}")
 
-    public ResponseEntity<FarmResponseVM> update(@PathVariable UUID farm_uuid, @RequestBody @Valid FarmVM farmVM) {
+    public ResponseEntity<FarmResponseVM> update(@PathVariable UUID id, @RequestBody @Valid FarmVM farmVM) {
         Farm farm = farmMapper.toEntity(farmVM);
-        Farm updatedFarm = farmService.updateFarm(farm_uuid, farm);
+        Farm updatedFarm = farmService.updateFarm(id, farm);
         FarmResponseVM farmResponseVM = farmMapper.toResponseVM(updatedFarm);
         return new ResponseEntity<>(farmResponseVM, HttpStatus.OK);
     }
 
-    @DeleteMapping("/delete/{farm_uuid}")
-    public ResponseEntity<String> delete(@PathVariable UUID farm_uuid) {
-        boolean isDeleted = farmService.deleteFarm(farm_uuid);
+    @DeleteMapping("/{id}")
+    public ResponseEntity<Map> delete(@PathVariable UUID id) {
+        boolean isDeleted = farmService.deleteFarm(id);
+        Map<String, String> response = new HashMap<>();
         if (isDeleted) {
-            return new ResponseEntity<>("The farm was deleted successfully.", HttpStatus.OK);
+            response.put("message", "Farm deleted successfully");
+            return new ResponseEntity<>(response, HttpStatus.OK);
         } else {
-            return new ResponseEntity<>("Farm not found.", HttpStatus.NOT_FOUND);
+            response.put("message", "Farm not deleted with ID: " + id);
+            return new ResponseEntity<>(response, HttpStatus.CONFLICT);
         }
     }
 
-    @GetMapping("/find/{farm_uuid}")
-    public ResponseEntity<FarmResponseVM> findById(@PathVariable UUID farm_uuid) {
-        Farm farm = farmService.getFarmById(farm_uuid)
-                .orElseThrow(() -> new IllegalArgumentException("Farm not found with ID: " + farm_uuid));
-        FarmResponseVM farmResponseVM = farmMapper.toResponseVM(farm);
+    @GetMapping("/{id}")
+    public ResponseEntity<FarmResponseVM> findById(@PathVariable UUID id) {
+        Optional<Farm> farm = farmService.getFarmById(id);
+        FarmResponseVM farmResponseVM = farmMapper.toResponseVM(farm.get());
         return new ResponseEntity<>(farmResponseVM, HttpStatus.OK);
     }
 
-    @GetMapping("/all")
+    @GetMapping
 
     public ResponseEntity<Page<FarmResponseVM>> findAll(Pageable pageable) {
         Page<Farm> farms = farmService.findAll(pageable);

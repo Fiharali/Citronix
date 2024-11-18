@@ -26,11 +26,10 @@ public class HarvestController {
 
 
 
-    @PostMapping("/save")
+    @PostMapping
     public ResponseEntity<HarvestResponseVM> save(@RequestBody @Valid HarvestVM harvestVM) {
 
         List<HarvestDetail> harvestDetails = harvestMapper.harvestDetailVMsToHarvestDetails(harvestVM.getHarvestDetails());
-
 
         Harvest savedHarvest = harvestService.createHarvest(
                 harvestVM.getFieldId(),
@@ -40,30 +39,28 @@ public class HarvestController {
         );
 
         HarvestResponseVM response = harvestMapper.harvestToHarvestResponseVM(savedHarvest);
-
         return new ResponseEntity<>(response, HttpStatus.CREATED);
     }
 
 
-    @GetMapping("/all")
-
+    @GetMapping
     public ResponseEntity<List<HarvestResponseVM>> getAllHarvests() {
         List<Harvest> harvests = harvestService.getAllHarvests();
         List<HarvestResponseVM> responses = harvestMapper.harvestsToHarvestResponseVMs(harvests);
         return new ResponseEntity<>(responses, HttpStatus.OK);
     }
 
-    @GetMapping("/find/{harvestId}")
+    @GetMapping("/{id}")
 
-    public ResponseEntity<HarvestResponseVM> getHarvestById(@PathVariable UUID harvestId) {
-        Harvest harvest = harvestService.getHarvestById(harvestId);
+    public ResponseEntity<HarvestResponseVM> getHarvestById(@PathVariable UUID id) {
+        Harvest harvest = harvestService.getHarvestById(id);
         HarvestResponseVM response = harvestMapper.harvestToHarvestResponseVM(harvest);
         return new ResponseEntity<>(response, HttpStatus.OK);
     }
 
-    @DeleteMapping("/delete/{harvestId}")
-    public ResponseEntity<String> deleteHarvest(@PathVariable UUID harvestId) {
-        harvestService.deleteHarvest(harvestId);
+    @DeleteMapping("/{id}")
+    public ResponseEntity<String> deleteHarvest(@PathVariable UUID id) {
+        harvestService.deleteHarvest(id);
         return new ResponseEntity<>("Harvest deleted successfully.", HttpStatus.OK);
     }
 }
