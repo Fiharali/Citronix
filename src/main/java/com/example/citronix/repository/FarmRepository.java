@@ -1,7 +1,6 @@
 package com.example.citronix.repository;
 
 import com.example.citronix.model.Farm;
-import com.example.citronix.services.dto.SearchDTO;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;

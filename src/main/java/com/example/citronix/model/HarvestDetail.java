@@ -1,14 +1,11 @@
 package com.example.citronix.model;
 
-import com.example.citronix.model.enums.Season;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
-import java.time.LocalDate;
-import java.util.List;
 import java.util.UUID;
 
 @Entity

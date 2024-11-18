@@ -3,15 +3,14 @@ package com.example.citronix.services.impl;
 import com.example.citronix.model.Farm;
 import com.example.citronix.repository.FarmRepository;
 import com.example.citronix.services.FarmService;
-import com.example.citronix.services.dto.SearchDTO;
 import com.example.citronix.web.errors.exceptions.FarmAlreadyExistException;
 import com.example.citronix.web.errors.exceptions.ResourceNotFoundException;
+import org.springframework.data.domain.Example;
+import org.springframework.data.domain.ExampleMatcher;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
-import java.time.LocalDate;
-import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
 
@@ -62,6 +61,15 @@ public class FarmServiceImpl implements FarmService {
         farmRepository.delete(farm);
     }
 
+    @Override
+    public Page<Farm> search(Farm farm, Pageable pageable) {
+        ExampleMatcher matcher = ExampleMatcher.matchingAll()
+                .withIgnoreCase()
+                .withStringMatcher(ExampleMatcher.StringMatcher.CONTAINING);
+
+        Example<Farm> example = Example.of(farm, matcher);
+        return farmRepository.findAll(example, pageable);
+    }
 
 
 }
