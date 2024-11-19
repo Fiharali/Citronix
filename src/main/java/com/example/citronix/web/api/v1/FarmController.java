@@ -25,9 +25,8 @@ import java.util.*;
 @RequiredArgsConstructor
 public class FarmController {
 
-    @Autowired
-    @Qualifier("farmServiceImpl")
-    private  FarmService farmService;
+
+    private  final FarmService farmService;
     private final FarmMapper farmMapper;
 
 
@@ -69,16 +68,13 @@ public class FarmController {
     }
 
     @GetMapping
-
-    public ResponseEntity<List<FarmResponseVM>> findAll(Pageable pageable) {
-        List<Farm> farms = farmService.findAll();
-        List<FarmResponseVM> farmResponseVM = new ArrayList<>();
-        farms.forEach(farm -> farmResponseVM.add(farmMapper.toResponseVM(farm)));
+    public ResponseEntity<Page<FarmResponseVM>> findAll(Pageable pageable) {
+        Page<Farm> farms = farmService.findAll(pageable);
+        Page<FarmResponseVM> farmResponseVM = farms.map(farmMapper::toResponseVM);
         return new ResponseEntity<>(farmResponseVM, HttpStatus.OK);
     }
 
     @GetMapping("/search")
-
     public ResponseEntity<List<FarmSearchDTO>> searchFarm(
             @RequestParam(required = false) String name,
             @RequestParam(required = false) String location,

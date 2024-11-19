@@ -7,9 +7,8 @@ import java.util.UUID;
 
 public interface SaleService {
 
-    Sale createSale(UUID harvestId, UUID clientId, double unitPrice, double quantity);
+    Sale createSale(Sale sale , UUID clientId, UUID harvestId);
 
     List<Sale> getAllSales();
 
-    Sale getSaleById(UUID saleId);
 }

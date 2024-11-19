@@ -12,7 +12,8 @@ import java.util.UUID;
 public interface FarmService {
     Farm save(Farm farm);
 
-    List<Farm> findAll();
+    Page<Farm> findAll(Pageable pageable);
+
 
     Optional<Farm> getFarmById(UUID id);
 
@@ -21,4 +22,5 @@ public interface FarmService {
     boolean deleteFarm(UUID id);
 
     List<FarmSearchDTO> findByCriteria(FarmSearchDTO searchDTO);
+
 }

@@ -19,20 +19,12 @@ import java.util.UUID;
 public class Farm {
 
     @Id
-    @GeneratedValue(generator = "UUID")
-    @GenericGenerator(name = "UUID", strategy = "org.hibernate.id.UUIDGenerator")
+    @GeneratedValue(strategy = GenerationType.AUTO)
     private UUID id;
-
     private String name;
-
     private String location;
-
-
     private double area;
-
-
     private LocalDate creationDate;
-
     @OneToMany(mappedBy = "farm", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<Field> fields = new ArrayList<>();
 

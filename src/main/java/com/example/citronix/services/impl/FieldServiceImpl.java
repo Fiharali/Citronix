@@ -1,6 +1,8 @@
 package com.example.citronix.services.impl;
 
+import com.example.citronix.exceptions.FarmFullException;
 import com.example.citronix.exceptions.ResourceNotFoundException;
+import com.example.citronix.services.FarmService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -20,24 +22,23 @@ import java.util.UUID;
 public class FieldServiceImpl implements FieldService {
 
     private final FieldRepository fieldRepository;
-    private final FarmRepository farmRepository;
+    private final FarmService farmService;
 
 
 
     @Override
     public Field createField(UUID farmId, Field field) {
 
-        Farm farm = farmRepository.findById(farmId)
-                .orElseThrow(() -> new IllegalArgumentException("Farm not found with ID: " + farmId));
-
+        Farm farm = farmService.getFarmById(farmId)
+                .orElseThrow(() -> new ResourceNotFoundException("Farm not found with ID: " + farmId));
 
         long fieldCount = fieldRepository.countByFarmId(farmId);
         if (fieldCount >= 10) {
-            throw new IllegalArgumentException("Farm cannot have more than 10 fields.");
+            throw new FarmFullException("Farm cannot have more than 10 fields.");
         }
 
         if (field.getArea() > (farm.getArea() * 0.5)) {
-            throw new IllegalArgumentException("Field area exceeds 50% of the farm's total area.");
+            throw new FarmFullException("Field area exceeds 50% of the farm's total area.");
         }
 
         double totalFieldArea = fieldRepository.findByFarmId(farmId).stream()
@@ -45,7 +46,7 @@ public class FieldServiceImpl implements FieldService {
                 .sum();
 
         if (totalFieldArea + field.getArea() >= farm.getArea()) {
-            throw new IllegalArgumentException("Total area of fields must be strictly less than the farm's total area.");
+            throw new FarmFullException("Total area of fields must be strictly less than the farm's total area.");
         }
 
 

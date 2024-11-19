@@ -2,6 +2,8 @@ package com.example.citronix.web.vm.mapper;
 
 import com.example.citronix.domain.Sale;
 import com.example.citronix.web.vm.sale.SaleResponseVM;
+import com.example.citronix.web.vm.sale.SaleVM;
+import jakarta.validation.Valid;
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
 
@@ -16,4 +18,6 @@ public interface SaleMapper {
     SaleResponseVM saleToSaleResponseVM(Sale sale);
 
     List<SaleResponseVM> salesToSaleResponseVMs(List<Sale> sales);
+
+    Sale saleVMToSale(SaleVM saleVM);
 }

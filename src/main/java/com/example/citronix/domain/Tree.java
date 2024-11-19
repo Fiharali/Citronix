@@ -18,9 +18,7 @@ public class Tree {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private UUID id;
-
     private LocalDate plantingDate;
-
     @ManyToOne
     @JoinColumn(name = "field_id", nullable = false)
     private Field field;

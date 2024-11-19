@@ -27,7 +27,6 @@ public class FarmSearchRepositoryImpl implements FarmSearchRepository {
         CriteriaQuery<FarmSearchDTO> query = cb.createQuery(FarmSearchDTO.class);
         Root<Farm> farmRoot = query.from(Farm.class);
 
-
         query.select(cb.construct(FarmSearchDTO.class,
                 farmRoot.get("name"),
                 farmRoot.get("location"),
@@ -37,14 +36,19 @@ public class FarmSearchRepositoryImpl implements FarmSearchRepository {
         List<Predicate> predicates = new ArrayList<>();
 
         if (StringUtils.hasText(searchDTO.getName())) {
-            predicates.add(cb.equal(farmRoot.get("name"), searchDTO.getName()));
+            predicates.add(cb.like(cb.lower(farmRoot.get("name")),
+                    "%" + searchDTO.getName().toLowerCase() + "%"));
         }
+
+
         if (StringUtils.hasText(searchDTO.getLocation())) {
             predicates.add(cb.like(cb.lower(farmRoot.get("location")),
                     "%" + searchDTO.getLocation().toLowerCase() + "%"));
         }
+
         if (searchDTO.getCreationDate() != null) {
-            predicates.add(cb.equal(farmRoot.get("creationDate"), searchDTO.getCreationDate()));
+            predicates.add(cb.like(cb.function("TO_CHAR", String.class, farmRoot.get("creationDate"), cb.literal("YYYY-MM-DD")),
+                    "%" + searchDTO.getCreationDate().toString() + "%"));
         }
         if (!predicates.isEmpty()) {
             query.where(cb.and(predicates.toArray(new Predicate[0])));
@@ -52,4 +56,5 @@ public class FarmSearchRepositoryImpl implements FarmSearchRepository {
 
         return entityManager.createQuery(query).getResultList();
     }
+
 }
