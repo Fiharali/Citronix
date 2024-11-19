@@ -27,27 +27,22 @@ public class SaleServiceImpl implements SaleService {
     }
 
     @Override
-    public Sale createSale(UUID harvestId, UUID clientId, double unitPrice, double quantity) {
-        // Retrieve the harvest
+    public Sale createSale(Sale sale , UUID clientId, UUID harvestId) {
+
         Harvest harvest = harvestRepository.findById(harvestId)
                 .orElseThrow(() -> new IllegalArgumentException("Harvest not found"));
 
-        // Retrieve the client
+
         Client client = clientRepository.findById(clientId)
                 .orElseThrow(() -> new IllegalArgumentException("Client not found"));
 
-        // Calculate revenue
-        double revenue = unitPrice * quantity;
+        double revenue = sale.getQuantity() * sale.getUnitPrice();
 
-        // Create and save the sale
-        Sale sale = Sale.builder()
-                .harvest(harvest)
-                .client(client)
-                .unitPrice(unitPrice)
-                .quantity(quantity)
-                .revenue(revenue)
-                .saleDate(LocalDate.now())
-                .build();
+
+        sale.setSaleDate(LocalDate.now());
+        sale.setRevenue(revenue);
+        sale.setClient(client);
+        sale.setHarvest(harvest);
 
         return saleRepository.save(sale);
     }
@@ -57,9 +52,5 @@ public class SaleServiceImpl implements SaleService {
         return saleRepository.findAll();
     }
 
-    @Override
-    public Sale getSaleById(UUID saleId) {
-        return saleRepository.findById(saleId)
-                .orElseThrow(() -> new IllegalArgumentException("Sale not found"));
-    }
+
 }

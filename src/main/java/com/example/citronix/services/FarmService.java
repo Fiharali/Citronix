@@ -22,4 +22,5 @@ public interface FarmService {
     boolean deleteFarm(UUID id);
 
     List<FarmSearchDTO> findByCriteria(FarmSearchDTO searchDTO);
+
 }

@@ -1,6 +1,7 @@
 package com.example.citronix.web.errors;
 
-
+import com.example.citronix.exceptions.FarmFullException;
+import com.example.citronix.exceptions.ResourceDublicatedException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.MethodArgumentNotValidException;
@@ -31,6 +32,20 @@ public class GlobalExceptionHandler {
 
     @ExceptionHandler(ResourceNotFoundException.class)
     public ResponseEntity<Map<String, String>> handleResourceNotFoundException(ResourceNotFoundException exception) {
+        Map<String, String> error = new HashMap<>();
+        error.put("error", exception.getMessage());
+        return new ResponseEntity<>(error, HttpStatus.NOT_FOUND);
+    }
+
+    @ExceptionHandler(ResourceDublicatedException.class)
+    public ResponseEntity<Map<String, String>> handleResourceDuplicatedException(ResourceDublicatedException exception) {
+        Map<String, String> error = new HashMap<>();
+        error.put("error", exception.getMessage());
+        return new ResponseEntity<>(error, HttpStatus.CONFLICT);
+    }
+
+    @ExceptionHandler(FarmFullException.class)
+    public ResponseEntity<Map<String, String>> handleFarmFullException(FarmFullException exception) {
         Map<String, String> error = new HashMap<>();
         error.put("error", exception.getMessage());
         return new ResponseEntity<>(error, HttpStatus.CONFLICT);

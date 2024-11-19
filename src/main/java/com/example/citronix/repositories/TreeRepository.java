@@ -10,7 +10,6 @@ public interface TreeRepository extends JpaRepository<Tree, UUID> {
 
     long countByFieldId(UUID fieldId);
 
-
     List<Tree> findByFieldId(UUID fieldId);
 
 }

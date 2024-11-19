@@ -28,7 +28,9 @@ public class SaleController {
 
     @PostMapping
     public ResponseEntity<SaleResponseVM> createSale(@RequestBody @Valid SaleVM saleVM) {
-        Sale sale = saleService.createSale(saleVM.getHarvestId(), saleVM.getClientId(), saleVM.getUnitPrice(), saleVM.getQuantity());
+
+        Sale saleEntity = saleMapper.saleVMToSale(saleVM);
+        Sale sale = saleService.createSale(saleEntity, saleVM.getClientId(), saleVM.getHarvestId());
         SaleResponseVM response = saleMapper.saleToSaleResponseVM(sale);
         return new ResponseEntity<>(response, HttpStatus.CREATED);
     }

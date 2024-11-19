@@ -17,19 +17,13 @@ public class Sale {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private UUID id;
-
     private LocalDate saleDate;
-
     private double unitPrice;
-
     private double quantity;
-
     private double revenue;
-
     @ManyToOne
     @JoinColumn(name = "client_id", nullable = false)
     private Client client;
-
     @ManyToOne
     @JoinColumn(name = "harvest_id", nullable = false)
     private Harvest harvest;

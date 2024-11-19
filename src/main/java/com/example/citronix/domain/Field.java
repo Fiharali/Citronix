@@ -16,18 +16,13 @@ import java.util.UUID;
 public class Field {
 
     @Id
-    @GeneratedValue(generator = "UUID")
-    @GenericGenerator(name = "UUID", strategy = "org.hibernate.id.UUIDGenerator")
+    @GeneratedValue(strategy = GenerationType.AUTO)
     private UUID id;
-
     private float area;
-
     private int maxTrees;
-
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "farm_id", nullable = false)
     private Farm farm;
-
     @OneToMany(mappedBy = "field", cascade = CascadeType.ALL)
     private List<Tree> trees;
 }
