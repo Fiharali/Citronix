@@ -9,7 +9,7 @@ import com.example.citronix.domain.enums.Season;
 import com.example.citronix.repositories.FieldRepository;
 import com.example.citronix.repositories.HarvestDetailRepository;
 import com.example.citronix.repositories.HarvestRepository;
-import com.example.citronix.services.interfaces.HarvestService;
+import com.example.citronix.services.HarvestService;
 
 import java.time.LocalDate;
 import java.util.List;

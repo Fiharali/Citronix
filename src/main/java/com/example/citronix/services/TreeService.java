@@ -1,7 +1,8 @@
-package com.example.citronix.services.interfaces;
+package com.example.citronix.services;
 
 import com.example.citronix.domain.Tree;
 
+import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
 
@@ -13,12 +14,11 @@ public interface TreeService {
     // Method to update an existing tree
     Tree updateTree(UUID treeId, Tree updatedTree);
 
-    // Method to delete a tree by its ID
     void deleteTree(UUID treeId);
 
     // Method to retrieve a tree by its ID
     Optional<Tree> getTreeById(UUID treeId);
 
     // Method to retrieve all trees associated with a specific field
-    Iterable<Tree> getTreesByField(UUID fieldId);
+    List<Tree> getTreesByField(UUID fieldId);
 }

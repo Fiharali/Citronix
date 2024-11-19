@@ -10,9 +10,9 @@ import org.springframework.util.StringUtils;
 import org.springframework.web.bind.annotation.*;
 import com.example.citronix.domain.Farm;
 import com.example.citronix.services.dto.FarmSearchDTO;
-import com.example.citronix.services.interfaces.FarmService;
-import com.example.citronix.web.vm.FarmVm.FarmResponseVM;
-import com.example.citronix.web.vm.FarmVm.FarmVM;
+import com.example.citronix.services.FarmService;
+import com.example.citronix.web.vm.farm.FarmResponseVM;
+import com.example.citronix.web.vm.farm.FarmVM;
 import com.example.citronix.web.vm.mapper.FarmMapper;
 
 import java.time.LocalDate;

@@ -3,9 +3,9 @@ package com.example.citronix.web.vm.mapper;
 import org.mapstruct.Mapper;
 import com.example.citronix.domain.Farm;
 import com.example.citronix.services.dto.FarmSearchDTO;
-import com.example.citronix.web.vm.FarmVm.FarmResponseVM;
-import com.example.citronix.web.vm.FarmVm.FarmVM;
-import com.example.citronix.web.vm.FarmVm.FarmSearchVM;
+import com.example.citronix.web.vm.farm.FarmResponseVM;
+import com.example.citronix.web.vm.farm.FarmVM;
+import com.example.citronix.web.vm.farm.FarmSearchVM;
 
 import java.util.List;
 

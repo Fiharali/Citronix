@@ -3,7 +3,7 @@ package com.example.citronix.services.impl;
 import org.springframework.stereotype.Service;
 import com.example.citronix.domain.Client;
 import com.example.citronix.repositories.ClientRepository;
-import com.example.citronix.services.interfaces.ClientService;
+import com.example.citronix.services.ClientService;
 
 import java.util.List;
 import java.util.UUID;

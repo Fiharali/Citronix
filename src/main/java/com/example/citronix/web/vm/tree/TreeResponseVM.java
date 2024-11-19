@@ -1,4 +1,4 @@
-package com.example.citronix.web.vm.TreeVm;
+package com.example.citronix.web.vm.tree;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;

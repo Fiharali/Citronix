@@ -7,7 +7,7 @@ import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
 import com.example.citronix.exceptions.ResourceNotFoundException;
-import com.example.citronix.exceptions.ValidationException;
+
 
 import java.util.HashMap;
 import java.util.Map;
@@ -36,11 +36,6 @@ public class GlobalExceptionHandler {
         return new ResponseEntity<>(error, HttpStatus.CONFLICT);
     }
 
-    @ExceptionHandler(ValidationException.class)
-    public ResponseEntity<Map<String, String>> handleValidationException(ValidationException exception) {
-        Map<String, String> error = new HashMap<>();
-        error.put("error", exception.getMessage());
-        return new ResponseEntity<>(error, HttpStatus.CONFLICT);
-    }
+
 
 }

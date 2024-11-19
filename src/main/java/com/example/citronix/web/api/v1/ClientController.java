@@ -7,9 +7,9 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import com.example.citronix.domain.Client;
-import com.example.citronix.services.interfaces.ClientService;
-import com.example.citronix.web.vm.ClientVm.ClientVM;
-import com.example.citronix.web.vm.ClientVm.ClientResponseVM;
+import com.example.citronix.services.ClientService;
+import com.example.citronix.web.vm.client.ClientVM;
+import com.example.citronix.web.vm.client.ClientResponseVM;
 import com.example.citronix.web.vm.mapper.ClientMapper;
 
 import java.util.List;

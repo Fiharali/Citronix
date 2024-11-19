@@ -3,8 +3,8 @@ package com.example.citronix.web.vm.mapper;
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
 import com.example.citronix.domain.Client;
-import com.example.citronix.web.vm.ClientVm.ClientResponseVM;
-import com.example.citronix.web.vm.ClientVm.ClientVM;
+import com.example.citronix.web.vm.client.ClientResponseVM;
+import com.example.citronix.web.vm.client.ClientVM;
 
 import java.util.List;
 

@@ -1,9 +1,7 @@
-package com.example.citronix.web.vm.HarvestVm;
+package com.example.citronix.web.vm.harvest;
 
-import jakarta.validation.Valid;
 import jakarta.validation.constraints.*;
-import lombok.Getter;
-import lombok.Setter;
+import lombok.*;
 import com.example.citronix.domain.enums.Season;
 
 import java.util.List;
@@ -11,7 +9,7 @@ import java.util.UUID;
 
 @Getter
 @Setter
-public class HarvestVM {
+public class HarvestResponseVM {
 
     @NotNull(message = "Field ID is required.")
     private UUID fieldId;
@@ -19,6 +17,9 @@ public class HarvestVM {
     @NotNull(message = "Season is required.")
     private Season season;
 
+    @Positive(message = "Total quantity must be positive.")
+    private double totalQuantity;
+
     @NotEmpty(message = "Harvest details cannot be empty.")
-    private List<@Valid HarvestDetailVM> harvestDetails;
+    private List<HarvestDetailResponseVM> harvestDetails;
 }

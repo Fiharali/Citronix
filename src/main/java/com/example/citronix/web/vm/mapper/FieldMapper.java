@@ -4,8 +4,8 @@ import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
 import org.mapstruct.factory.Mappers;
 import com.example.citronix.domain.Field;
-import com.example.citronix.web.vm.FieldVm.FieldResponseVM;
-import com.example.citronix.web.vm.FieldVm.FieldVM;
+import com.example.citronix.web.vm.field.FieldResponseVM;
+import com.example.citronix.web.vm.field.FieldVM;
 
 import java.util.UUID;
 

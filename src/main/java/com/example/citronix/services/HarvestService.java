@@ -1,4 +1,4 @@
-package com.example.citronix.services.interfaces;
+package com.example.citronix.services;
 
 import jakarta.validation.constraints.NotEmpty;
 import com.example.citronix.domain.Harvest;

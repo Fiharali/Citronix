@@ -7,7 +7,7 @@ import com.example.citronix.domain.Sale;
 import com.example.citronix.repositories.ClientRepository;
 import com.example.citronix.repositories.HarvestRepository;
 import com.example.citronix.repositories.SaleRepository;
-import com.example.citronix.services.interfaces.SaleService;
+import com.example.citronix.services.SaleService;
 
 import java.time.LocalDate;
 import java.util.List;

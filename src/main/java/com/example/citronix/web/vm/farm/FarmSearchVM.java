@@ -1,4 +1,4 @@
-package com.example.citronix.web.vm.FarmVm;
+package com.example.citronix.web.vm.farm;
 
 import lombok.*;
 

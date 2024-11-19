@@ -3,7 +3,7 @@ package com.example.citronix.services.impl;
 import org.springframework.stereotype.Service;
 import com.example.citronix.repositories.FarmSearchRepository;
 import com.example.citronix.services.dto.FarmSearchDTO;
-import com.example.citronix.services.interfaces.FarmSearchService;
+import com.example.citronix.services.FarmSearchService;
 
 import java.util.List;
 
