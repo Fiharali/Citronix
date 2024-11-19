@@ -30,7 +30,6 @@ public class FieldServiceImpl implements FieldService {
         Farm farm = farmRepository.findById(farmId)
                 .orElseThrow(() -> new IllegalArgumentException("Farm not found with ID: " + farmId));
 
-
         long fieldCount = fieldRepository.countByFarmId(farmId);
         if (fieldCount >= 10) {
             throw new IllegalArgumentException("Farm cannot have more than 10 fields.");
