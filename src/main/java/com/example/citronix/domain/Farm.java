@@ -23,16 +23,14 @@ public class Farm {
     @GenericGenerator(name = "UUID", strategy = "org.hibernate.id.UUIDGenerator")
     private UUID id;
 
-    @Column(nullable = false)
     private String name;
 
-    @Column(nullable = false)
     private String location;
 
-    @Column(nullable = false)
+
     private double area;
 
-    @Column(nullable = false)
+
     private LocalDate creationDate;
 
     @OneToMany(mappedBy = "farm", cascade = CascadeType.ALL, orphanRemoval = true)

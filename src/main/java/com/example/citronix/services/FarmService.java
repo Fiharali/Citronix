@@ -12,7 +12,7 @@ import java.util.UUID;
 public interface FarmService {
     Farm save(Farm farm);
 
-    Page<Farm> findAll(Pageable pageable);
+    List<Farm> findAll();
 
     Optional<Farm> getFarmById(UUID id);
 

@@ -20,10 +20,8 @@ public class Field {
     @GenericGenerator(name = "UUID", strategy = "org.hibernate.id.UUIDGenerator")
     private UUID id;
 
-    @Column(nullable = false)
     private float area;
 
-    @Column(nullable = false)
     private int maxTrees;
 
     @ManyToOne(fetch = FetchType.LAZY)

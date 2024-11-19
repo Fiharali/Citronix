@@ -2,6 +2,8 @@ package com.example.citronix.web.api.v1;
 
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
@@ -23,7 +25,9 @@ import java.util.*;
 @RequiredArgsConstructor
 public class FarmController {
 
-    private final FarmService farmService;
+    @Autowired
+    @Qualifier("farmServiceImpl")
+    private  FarmService farmService;
     private final FarmMapper farmMapper;
 
 
@@ -37,7 +41,6 @@ public class FarmController {
     }
 
     @PutMapping("/{id}")
-
     public ResponseEntity<FarmResponseVM> update(@PathVariable UUID id, @RequestBody @Valid FarmVM farmVM) {
         Farm farm = farmMapper.toEntity(farmVM);
         Farm updatedFarm = farmService.updateFarm(id, farm);
@@ -67,9 +70,10 @@ public class FarmController {
 
     @GetMapping
 
-    public ResponseEntity<Page<FarmResponseVM>> findAll(Pageable pageable) {
-        Page<Farm> farms = farmService.findAll(pageable);
-        Page<FarmResponseVM> farmResponseVM = farms.map(farmMapper::toResponseVM);
+    public ResponseEntity<List<FarmResponseVM>> findAll(Pageable pageable) {
+        List<Farm> farms = farmService.findAll();
+        List<FarmResponseVM> farmResponseVM = new ArrayList<>();
+        farms.forEach(farm -> farmResponseVM.add(farmMapper.toResponseVM(farm)));
         return new ResponseEntity<>(farmResponseVM, HttpStatus.OK);
     }
 

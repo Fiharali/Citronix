@@ -1,5 +1,6 @@
 package com.example.citronix.web.vm.farm;
 
+import com.example.citronix.domain.Field;
 import jakarta.validation.constraints.*;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -8,6 +9,8 @@ import lombok.Setter;
 
 
 import java.time.LocalDate;
+import java.util.ArrayList;
+import java.util.List;
 
 @Getter
 @Setter
@@ -31,6 +34,12 @@ public class FarmVM {
     @NotNull(message = "Creation date is required.")
     @PastOrPresent(message = "Creation date must be in the past or today.")
     private LocalDate creationDate;
+
+    private List<Field> fields = new ArrayList<>();
+    @AssertTrue(message = "Farm cannot have fields.")
+    public boolean isFieldsEmptyOrNull() {
+        return fields == null || fields.isEmpty();
+    }
 
 }
 

@@ -9,6 +9,7 @@ import com.example.citronix.repositories.TreeRepository;
 import com.example.citronix.services.TreeService;
 
 import java.util.List;
+import java.util.Optional;
 import java.util.UUID;
 
 @Service
@@ -85,9 +86,9 @@ public class TreeServiceImpl implements TreeService {
     }
 
     @Override
-    public Tree getTreeById(UUID treeId) {
-        return treeRepository.findById(treeId).orElseThrow(()->
-                new ResourceNotFoundException("Tree not found"));
+    public Optional<Tree> getTreeById(UUID treeId) {
+        return Optional.ofNullable(treeRepository.findById(treeId).orElseThrow(() ->
+                new ResourceNotFoundException("Tree not found")));
     }
 
     @Override
