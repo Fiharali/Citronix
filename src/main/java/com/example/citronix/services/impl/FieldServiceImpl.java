@@ -1,6 +1,7 @@
 package com.example.citronix.services.impl;
 
 import com.example.citronix.exceptions.ResourceNotFoundException;
+import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
@@ -15,15 +16,13 @@ import java.util.Optional;
 import java.util.UUID;
 
 @Service
+@RequiredArgsConstructor
 public class FieldServiceImpl implements FieldService {
 
     private final FieldRepository fieldRepository;
     private final FarmRepository farmRepository;
 
-    public FieldServiceImpl(FieldRepository fieldRepository, FarmRepository farmRepository) {
-        this.fieldRepository = fieldRepository;
-        this.farmRepository = farmRepository;
-    }
+
 
     @Override
     public Field createField(UUID farmId, Field field) {
@@ -37,7 +36,6 @@ public class FieldServiceImpl implements FieldService {
             throw new IllegalArgumentException("Farm cannot have more than 10 fields.");
         }
 
-
         if (field.getArea() > (farm.getArea() * 0.5)) {
             throw new IllegalArgumentException("Field area exceeds 50% of the farm's total area.");
         }
@@ -45,14 +43,15 @@ public class FieldServiceImpl implements FieldService {
         double totalFieldArea = fieldRepository.findByFarmId(farmId).stream()
                 .mapToDouble(Field::getArea)
                 .sum();
+
         if (totalFieldArea + field.getArea() >= farm.getArea()) {
             throw new IllegalArgumentException("Total area of fields must be strictly less than the farm's total area.");
         }
 
-        field.setMaxTrees((int) (field.getArea() / 100.0));
+
 
         field.setFarm(farm);
-
+        field.setMaxTrees((int) (field.getArea() / 100.0));
         return fieldRepository.save(field);
     }
 
@@ -61,15 +60,11 @@ public class FieldServiceImpl implements FieldService {
         Field existingField = fieldRepository.findById(fieldId)
                 .orElseThrow(() -> new IllegalArgumentException("Field not found with ID: " + fieldId));
 
-        // Update properties
-        existingField.setArea(updatedField.getArea());
 
-        // Step 1: Check if the updated field area exceeds 50% of the farm's area
+        existingField.setArea(updatedField.getArea());
         if (updatedField.getArea() > (existingField.getFarm().getArea() * 0.5)) {
             throw new IllegalArgumentException("Field area exceeds 50% of the farm's total area.");
         }
-
-        // Step 2: Ensure the sum of all field areas is less than the farm's area
         double totalFieldArea = fieldRepository.findByFarmId(existingField.getFarm().getId()).stream()
                 .mapToDouble(Field::getArea)
                 .sum();
@@ -77,7 +72,6 @@ public class FieldServiceImpl implements FieldService {
             throw new IllegalArgumentException("Total area of fields must be strictly less than the farm's total area.");
         }
 
-        // Recalculate maxTrees
         existingField.setMaxTrees((int) (updatedField.getArea() / 100.0));
 
         return fieldRepository.save(existingField);
@@ -107,6 +101,11 @@ public class FieldServiceImpl implements FieldService {
             throw new ResourceNotFoundException("Field not found with ID: " + fieldId);
         }
         return field;
+    }
+
+    @Override
+    public void deleteFieldsByFarm(UUID id) {
+        fieldRepository.deleteByFarmId(id);
     }
 
 }
