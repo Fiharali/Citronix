@@ -53,7 +53,6 @@ public class ClientController {
     public ResponseEntity<ClientResponseVM> updateClient(@PathVariable UUID id, @RequestBody @Valid ClientVM clientVM) {
         Client updatedClient = clientService.updateClient(id,clientMapper.clientVMToClient(clientVM));
         ClientResponseVM response = clientMapper.toClientResponseVM(updatedClient);
-        //
         return new ResponseEntity<>(response, HttpStatus.OK);
     }
 

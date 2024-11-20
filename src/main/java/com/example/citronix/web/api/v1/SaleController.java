@@ -13,7 +13,9 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.UUID;
 
 @RestController
@@ -28,7 +30,6 @@ public class SaleController {
 
     @PostMapping
     public ResponseEntity<SaleResponseVM> createSale(@RequestBody @Valid SaleVM saleVM) {
-
         Sale saleEntity = saleMapper.saleVMToSale(saleVM);
         Sale sale = saleService.createSale(saleEntity, saleVM.getClientId(), saleVM.getHarvestId());
         SaleResponseVM response = saleMapper.saleToSaleResponseVM(sale);
@@ -42,7 +43,13 @@ public class SaleController {
         return new ResponseEntity<>(responses, HttpStatus.OK);
     }
 
-
+    @DeleteMapping("/{id}")
+    public ResponseEntity<Map> deleteClient(@PathVariable UUID id) {
+        saleService.delete(id);
+        Map response = new HashMap<>();
+        response.put("message", "sale deleted successfully.");
+        return new ResponseEntity<>(response, HttpStatus.OK);
+    }
 
 
 }

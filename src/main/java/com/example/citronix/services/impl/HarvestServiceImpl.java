@@ -1,5 +1,8 @@
 package com.example.citronix.services.impl;
 
+import com.example.citronix.domain.Tree;
+import com.example.citronix.exceptions.ResourceNotFoundException;
+import com.example.citronix.services.TreeService;
 import jakarta.validation.constraints.NotEmpty;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -14,6 +17,7 @@ import com.example.citronix.services.HarvestService;
 
 import java.time.LocalDate;
 import java.util.List;
+import java.util.Optional;
 import java.util.UUID;
 
 @Service
@@ -22,54 +26,43 @@ public class HarvestServiceImpl implements HarvestService {
 
     private final HarvestRepository harvestRepository;
     private final HarvestDetailRepository harvestDetailRepository;
-    private final FieldRepository fieldRepository;
+    private final TreeService treeService;
+
 
 
 
     @Override
-    public Harvest createHarvest(  List<HarvestDetail> harvestDetails, Season season, double totalQuantity) {
+    public Harvest createHarvest( Harvest harvest) {
 
-        validateHarvestDetails(harvestDetails, season);
+        double totalQuantityOfTrees = validateHarvestDetailsAndGetTotal(harvest.getHarvestDetails(), harvest.getSeason());
 
+        harvest.getHarvestDetails().forEach(hd -> hd.setHarvest(harvest));
 
-        double calculatedTotalQuantity = harvestDetails.stream()
-                .mapToDouble(HarvestDetail::getQuantity)
-                .sum();
-
-
-        Harvest harvest = Harvest.builder()
-                .season(season)
-                .totalQuantity(calculatedTotalQuantity)
-                .harvestDate(LocalDate.now())
-                .build();
-
-
-        harvestDetails.forEach(hd -> hd.setHarvest(harvest));
-
-
-        harvest.setHarvestDetails(harvestDetails);
-
-        harvestRepository.save(harvest);
-
-        return harvest;
+        harvest.setTotalQuantity(totalQuantityOfTrees);
+        return harvestRepository.save(harvest);
     }
 
-    private void validateHarvestDetails(List<HarvestDetail> harvestDetails, Season season) {
+    private double validateHarvestDetailsAndGetTotal(List<HarvestDetail> harvestDetails, Season season) {
+        double totalQuantityOfTrees = 0;
         for (HarvestDetail detail : harvestDetails) {
 
-            if (detail.getTree().getPlantingDate().plusYears(20).isBefore(LocalDate.now())) {
+            Optional<Tree> tree = treeService.getTreeById(detail.getTree().getId());
+
+            if (tree.isEmpty()) {
+                throw new ResourceNotFoundException("Tree " + detail.getTree().getId() + " not found.");
+            }
+
+            if (tree.get().getPlantingDate().plusYears(20).isBefore(LocalDate.now())) {
                 throw new IllegalArgumentException("Tree " + detail.getTree().getId() + " is older than 20 years and cannot be harvested.");
             }
 
-            int plantingMonth = detail.getTree().getPlantingDate().getMonthValue();
-            if (plantingMonth < 3 || plantingMonth > 5) {
-                throw new IllegalArgumentException("Tree " + detail.getTree().getId() + " was not planted during the valid period (March to May).");
-            }
-
-            if (harvestDetailRepository.existsByTreeIdAndHarvestSeason(detail.getTree().getId(), season)) {
+            if (harvestDetailRepository.existsByTreeIdAndHarvestSeason(tree.get().getId(), season)) {
                 throw new IllegalArgumentException("Tree " + detail.getTree().getId() + " is already included in another harvest for the same season.");
             }
+
+            totalQuantityOfTrees += tree.get().getProductivity();
         }
+        return totalQuantityOfTrees;
     }
 
     @Override

@@ -14,5 +14,5 @@ public class HarvestDetailResponseVM {
     private UUID treeId;
 
     @Positive(message = "Quantity must be positive.")
-    private double quantity;
+    private double productivity;
 }

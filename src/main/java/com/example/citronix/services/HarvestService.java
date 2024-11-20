@@ -11,7 +11,7 @@ import java.util.UUID;
 public interface HarvestService {
 
 
-    Harvest createHarvest( List<HarvestDetail> harvestDetails, Season season, double totalQuantity);
+    Harvest createHarvest( Harvest harvest);
 
     List<Harvest> getAllHarvests();
 
