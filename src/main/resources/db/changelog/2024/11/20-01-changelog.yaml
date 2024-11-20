@@ -1,0 +1,13 @@
+databaseChangeLog:
+
+  - changeSet:
+      id: 1732115642360-7
+      author: Youcode
+      objectQuotingStrategy: QUOTE_ONLY_RESERVED_WORDS
+      changes:
+        - dropColumn:
+            columnName: revenue
+            tableName: sale
+
+
+

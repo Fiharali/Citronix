@@ -13,7 +13,9 @@ import com.example.citronix.web.vm.harvest.HarvestVM;
 import com.example.citronix.web.vm.harvest.HarvestResponseVM;
 import com.example.citronix.web.vm.mapper.HarvestMapper;
 
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.UUID;
 
 @RestController
@@ -28,8 +30,6 @@ public class HarvestController {
 
     @PostMapping
     public ResponseEntity<HarvestResponseVM> save(@RequestBody @Valid HarvestVM harvestVM) {
-
-
         Harvest harvest = harvestMapper.harvestVMToHarvest(harvestVM);
 
         Harvest savedHarvest = harvestService.createHarvest(harvest);
@@ -47,7 +47,6 @@ public class HarvestController {
     }
 
     @GetMapping("/{id}")
-
     public ResponseEntity<HarvestResponseVM> getHarvestById(@PathVariable UUID id) {
         Harvest harvest = harvestService.getHarvestById(id);
         HarvestResponseVM response = harvestMapper.harvestToHarvestResponseVM(harvest);
@@ -55,8 +54,10 @@ public class HarvestController {
     }
 
     @DeleteMapping("/{id}")
-    public ResponseEntity<String> deleteHarvest(@PathVariable UUID id) {
+    public ResponseEntity<Map> deleteHarvest(@PathVariable UUID id) {
         harvestService.deleteHarvest(id);
-        return new ResponseEntity<>("Harvest deleted successfully.", HttpStatus.OK);
+        Map response = new HashMap();
+        response.put("message", "Harvest deleted successfully.");
+        return new ResponseEntity<>(response, HttpStatus.OK);
     }
 }
