@@ -1,6 +1,7 @@
 package com.example.citronix.services.impl;
 
 import com.example.citronix.exceptions.ResourceNotFoundException;
+import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import com.example.citronix.domain.Field;
 import com.example.citronix.domain.Tree;
@@ -13,27 +14,27 @@ import java.util.Optional;
 import java.util.UUID;
 
 @Service
+@RequiredArgsConstructor
 public class TreeServiceImpl implements TreeService {
 
     private final TreeRepository treeRepository;
     private final FieldRepository fieldRepository;
 
-    public TreeServiceImpl(TreeRepository treeRepository, FieldRepository fieldRepository) {
-        this.treeRepository = treeRepository;
-        this.fieldRepository = fieldRepository;
-    }
+
 
     @Override
     public Tree createTree(UUID fieldId, Tree tree) {
         Field field = fieldRepository.findById(fieldId)
-                .orElseThrow(() -> new IllegalArgumentException("Field not found"));
+                .orElseThrow(() -> new ResourceNotFoundException("Field not found"));
 
-        if (!tree.isPlantingSeason()) {
+        int month = tree.getPlantingDate().getMonthValue();
+        
+        if (month < 3 || month > 5) {
             throw new IllegalArgumentException("Tree planting must be between March and May.");
         }
         double totalFieldArea = fieldRepository.findById(fieldId)
                 .map(Field::getArea)
-                .orElseThrow(() -> new IllegalArgumentException("Field not found"));
+                .orElseThrow(() -> new ResourceNotFoundException("Field not found"));
 
         long numberOfTrees = treeRepository.countByFieldId(fieldId);
         double treeDensity = numberOfTrees / totalFieldArea;
@@ -48,20 +49,20 @@ public class TreeServiceImpl implements TreeService {
 
 
     @Override
-    public Tree updateTree(UUID treeId, Tree updatedTree) {
+    public Tree updateTree(UUID treeId, Tree tree) {
         Tree existingTree = treeRepository.findById(treeId)
                 .orElseThrow(() -> new IllegalArgumentException("Tree not found"));
 
-        if (!updatedTree.isPlantingSeason()) {
+        int month = tree.getPlantingDate().getMonthValue();
+        if (month < 3 || month > 5) {
             throw new IllegalArgumentException("Tree planting must be between March and May.");
         }
-
-        if (updatedTree.getPlantingDate() != null && !updatedTree.getPlantingDate().equals(existingTree.getPlantingDate())) {
-            existingTree.setPlantingDate(updatedTree.getPlantingDate());
+        if (!tree.getPlantingDate().equals(existingTree.getPlantingDate())) {
+            existingTree.setPlantingDate(tree.getPlantingDate());
         }
 
-        if (updatedTree.getField() != null && !updatedTree.getField().equals(existingTree.getField())) {
-            Field field = fieldRepository.findById(updatedTree.getField().getId())
+        if (tree.getField() != null && !tree.getField().equals(existingTree.getField())) {
+            Field field = fieldRepository.findById(tree.getField().getId())
                     .orElseThrow(() -> new IllegalArgumentException("Field not found"));
             existingTree.setField(field);
         }

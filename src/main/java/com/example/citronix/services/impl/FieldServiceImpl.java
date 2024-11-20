@@ -50,9 +50,10 @@ public class FieldServiceImpl implements FieldService {
         }
 
 
+        int maxTrees = (int) Math.floor(field.getArea() / 1000.0 * 10);
 
         field.setFarm(farm);
-        field.setMaxTrees((int) (field.getArea() / 100.0));
+        field.setMaxTrees(maxTrees);
         return fieldRepository.save(field);
     }
 

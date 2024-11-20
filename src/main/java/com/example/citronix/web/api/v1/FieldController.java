@@ -14,6 +14,8 @@ import com.example.citronix.web.vm.field.FieldVM;
 import com.example.citronix.web.vm.field.FieldResponseVM;
 import com.example.citronix.web.vm.mapper.FieldMapper;
 
+import java.util.HashMap;
+import java.util.Map;
 import java.util.Optional;
 import java.util.UUID;
 
@@ -43,9 +45,11 @@ public class FieldController {
     }
 
     @DeleteMapping("/{id}")
-    public ResponseEntity<String> delete(@PathVariable UUID id) {
+    public ResponseEntity<Map<String, String>> delete(@PathVariable UUID id) {
         fieldService.deleteField(id);
-        return new ResponseEntity<>("Field deleted successfully.", HttpStatus.OK);
+        Map<String, String> response = new HashMap<>();
+        response.put("message", "Field deleted successfully.");
+        return new ResponseEntity<>(response, HttpStatus.OK);
     }
 
     @GetMapping("/{id}")

@@ -20,7 +20,7 @@ public class Tree {
     private UUID id;
     private LocalDate plantingDate;
     @ManyToOne
-    @JoinColumn(name = "field_id", nullable = false)
+    @JoinColumn(name = "field_id")
     private Field field;
 
     @Transient
@@ -42,13 +42,6 @@ public class Tree {
         }
     }
 
-    @Transient
-    public boolean isPlantingSeason() {
-        if (plantingDate == null) {
-            return false;
-        }
-        int month = plantingDate.getMonthValue();
-        return month >= 3 && month <= 5;
-    }
+
 
 }

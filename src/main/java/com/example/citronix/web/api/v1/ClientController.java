@@ -12,7 +12,9 @@ import com.example.citronix.web.vm.client.ClientVM;
 import com.example.citronix.web.vm.client.ClientResponseVM;
 import com.example.citronix.web.vm.mapper.ClientMapper;
 
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.UUID;
 
 @RestController
@@ -56,8 +58,10 @@ public class ClientController {
     }
 
     @DeleteMapping("/{id}")
-    public ResponseEntity<String> deleteClient(@PathVariable UUID id) {
+    public ResponseEntity<Map> deleteClient(@PathVariable UUID id) {
         clientService.deleteClient(id);
-        return new ResponseEntity<>("Client deleted successfully", HttpStatus.OK);
+        Map response = new HashMap<>();
+        response.put("message", "Field deleted successfully.");
+        return new ResponseEntity<>(response, HttpStatus.OK);
     }
 }
