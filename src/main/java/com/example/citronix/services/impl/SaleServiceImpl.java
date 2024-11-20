@@ -48,6 +48,10 @@ public class SaleServiceImpl implements SaleService {
 
     @Override
     public void delete(UUID id) {
+
+        saleRepository.findById(id)
+                .orElseThrow(() -> new ResourceNotFoundException("Sale not found"));
+
         saleRepository.deleteById(id);
     }
 }
