@@ -12,9 +12,7 @@ import com.example.citronix.web.vm.tree.TreeVM;
 import com.example.citronix.web.vm.tree.TreeResponseVM;
 import com.example.citronix.web.vm.mapper.TreeMapper;
 
-import java.util.List;
-import java.util.Optional;
-import java.util.UUID;
+import java.util.*;
 
 @RestController
 @RequestMapping("/api/v1/trees")
@@ -45,11 +43,13 @@ public class TreeController {
         return new ResponseEntity<>(response, HttpStatus.OK);
     }
 
-    @DeleteMapping("/{id}")
 
-    public ResponseEntity<String> delete(@PathVariable UUID id) {
+    @DeleteMapping("/{id}")
+    public ResponseEntity<Map> delete(@PathVariable UUID id) {
         treeService.deleteTree(id);
-        return new ResponseEntity<>("Tree deleted successfully.", HttpStatus.OK);
+        Map<String, String> response = new HashMap<>();
+        response.put("message", "Tree deleted successfully.");
+        return new ResponseEntity<>(response, HttpStatus.OK);
     }
 
 
@@ -60,11 +60,13 @@ public class TreeController {
         return new ResponseEntity<>(response, HttpStatus.OK);
     }
 
-
-    @GetMapping("/get-by-field/{fieldId}")
-    public ResponseEntity<Iterable<TreeResponseVM>> findByField(@PathVariable UUID fieldId) {
-        List<Tree> trees = treeService.getTreesByField(fieldId);
-        Iterable<TreeResponseVM> response = treeMapper.treesToTreeResponseVMs(trees);
+    @GetMapping
+    public ResponseEntity<List<TreeResponseVM>> getAll() {
+        List<Tree> trees = treeService.getAllTrees();
+        List<TreeResponseVM> response = treeMapper.treesToTreeResponseVMs(trees);
         return new ResponseEntity<>(response, HttpStatus.OK);
     }
+
+
+
 }

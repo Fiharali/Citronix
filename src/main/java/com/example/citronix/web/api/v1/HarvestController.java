@@ -29,9 +29,10 @@ public class HarvestController {
     @PostMapping
     public ResponseEntity<HarvestResponseVM> save(@RequestBody @Valid HarvestVM harvestVM) {
 
-        List<HarvestDetail> harvestDetails = harvestMapper.harvestDetailVMsToHarvestDetails(harvestVM.getHarvestDetails());
 
-        Harvest savedHarvest = harvestService.createHarvest( harvestDetails, harvestVM.getSeason(), harvestVM.getQuantity());
+        Harvest harvest = harvestMapper.harvestVMToHarvest(harvestVM);
+
+        Harvest savedHarvest = harvestService.createHarvest(harvest);
 
         HarvestResponseVM response = harvestMapper.harvestToHarvestResponseVM(savedHarvest);
         return new ResponseEntity<>(response, HttpStatus.CREATED);

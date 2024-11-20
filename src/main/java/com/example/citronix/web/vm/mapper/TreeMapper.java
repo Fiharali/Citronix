@@ -32,5 +32,8 @@ public interface TreeMapper {
 
 
 
+    @Mapping(target = "age", source = "age")
+    @Mapping(target = "productivity", source = "productivity")
+    @Mapping(target = "fieldId", source = "field.id")
     List<TreeResponseVM> treesToTreeResponseVMs(List<Tree> trees);
 }

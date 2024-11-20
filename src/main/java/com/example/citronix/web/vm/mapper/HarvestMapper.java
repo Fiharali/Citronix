@@ -24,15 +24,9 @@ public interface HarvestMapper {
 
 
     @Mapping(target = "harvestDetails", source = "harvestDetails")
-    @Mapping(target = "id", ignore = true)
-    @Mapping(target = "harvestDate", ignore = true)
     Harvest harvestVMToHarvest(HarvestVM harvestVM);
 
-    /**
-     * Convert HarvestDetailVM to HarvestDetail entity
-     */
     @Mapping(target = "tree.id", source = "treeId")
-    @Mapping(target = "quantity", source = "quantity")
     @Mapping(target = "id", ignore = true)
     @Mapping(target = "harvest", ignore = true)
     HarvestDetail harvestDetailVMToHarvestDetail(HarvestDetailVM harvestDetailVM);
@@ -40,7 +34,7 @@ public interface HarvestMapper {
     List<HarvestDetail> harvestDetailVMsToHarvestDetails(List<HarvestDetailVM> harvestDetailVMs);
 
     @Mapping(target = "treeId", source = "tree.id")
-    @Mapping(target = "quantity", source = "quantity")
+    @Mapping(target = "productivity", source = "tree.productivity")
     HarvestDetailResponseVM harvestDetailToHarvestDetailResponseVM(HarvestDetail harvestDetail);
 
     List<HarvestDetailResponseVM> harvestDetailsToHarvestDetailResponseVMs(List<HarvestDetail> harvestDetails);

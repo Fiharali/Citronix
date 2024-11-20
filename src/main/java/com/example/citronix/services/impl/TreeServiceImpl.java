@@ -25,7 +25,7 @@ public class TreeServiceImpl implements TreeService {
     @Override
     public Tree createTree(UUID fieldId, Tree tree) {
         Field field = fieldRepository.findById(fieldId)
-//
+
                 .orElseThrow(() -> new ResourceNotFoundException("Field not found"));
 
         int month = tree.getPlantingDate().getMonthValue();
@@ -98,4 +98,8 @@ public class TreeServiceImpl implements TreeService {
         return treeRepository.findByFieldId(fieldId);
     }
 
+    @Override
+    public List<Tree> getAllTrees() {
+        return treeRepository.findAll();
+    }
 }
