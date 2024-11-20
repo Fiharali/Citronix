@@ -32,10 +32,9 @@ public class HarvestController {
         List<HarvestDetail> harvestDetails = harvestMapper.harvestDetailVMsToHarvestDetails(harvestVM.getHarvestDetails());
 
         Harvest savedHarvest = harvestService.createHarvest(
-                harvestVM.getFieldId(),
                 harvestDetails,
                 harvestVM.getSeason(),
-                0
+                harvestVM.getQuantity()
         );
 
         HarvestResponseVM response = harvestMapper.harvestToHarvestResponseVM(savedHarvest);

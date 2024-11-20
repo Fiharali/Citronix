@@ -1,0 +1,45 @@
+databaseChangeLog:
+  - changeSet:
+      id: 1732042397968-4
+      author: Youcode
+      objectQuotingStrategy: QUOTE_ONLY_RESERVED_WORDS
+      changes:
+        - dropForeignKeyConstraint:
+            baseTableName: harvest
+            constraintName: fk_harvest_on_field
+  - changeSet:
+      id: 1732042397968-5
+      author: Youcode
+      objectQuotingStrategy: QUOTE_ONLY_RESERVED_WORDS
+      changes:
+        - dropColumn:
+            columnName: field_id
+            tableName: harvest
+  - changeSet:
+      id: 1732042397968-1
+      author: Youcode
+      objectQuotingStrategy: QUOTE_ONLY_RESERVED_WORDS
+      changes:
+        - dropNotNullConstraint:
+            columnDataType: date
+            columnName: creation_date
+            tableName: farm
+  - changeSet:
+      id: 1732042397968-2
+      author: Youcode
+      objectQuotingStrategy: QUOTE_ONLY_RESERVED_WORDS
+      changes:
+        - dropNotNullConstraint:
+            columnDataType: varchar(255)
+            columnName: location
+            tableName: farm
+  - changeSet:
+      id: 1732042397968-3
+      author: Youcode
+      objectQuotingStrategy: QUOTE_ONLY_RESERVED_WORDS
+      changes:
+        - dropNotNullConstraint:
+            columnDataType: varchar(255)
+            columnName: name
+            tableName: farm
+

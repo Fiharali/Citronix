@@ -13,11 +13,12 @@ import java.util.UUID;
 @Setter
 public class HarvestVM {
 
-    @NotNull(message = "Field ID is required.")
-    private UUID fieldId;
 
     @NotNull(message = "Season is required.")
     private Season season;
+
+    @NotNull(message = "Season is required.")
+    private double quantity;
 
     @NotEmpty(message = "Harvest details cannot be empty.")
     private List<@Valid HarvestDetailVM> harvestDetails;

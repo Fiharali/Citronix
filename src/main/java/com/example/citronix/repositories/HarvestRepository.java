@@ -12,7 +12,5 @@ public interface HarvestRepository extends JpaRepository<Harvest, UUID> {
 
     Optional<Harvest> findById(UUID harvestId);
 
-    List<Harvest> findByFieldId(UUID fieldId);
-
-    boolean existsByFieldIdAndSeason(UUID fieldId, Season season);
+    boolean existsBySeason(Season season);
 }

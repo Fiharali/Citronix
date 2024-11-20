@@ -13,6 +13,7 @@ import java.util.UUID;
 @AllArgsConstructor
 public class FieldResponseVM {
 
+    private UUID id;
     private float area;
     private int maxTrees;
     private UUID farmId;
