@@ -1,6 +1,7 @@
 package com.example.citronix.services.impl;
 
 import jakarta.validation.constraints.NotEmpty;
+import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import com.example.citronix.domain.Field;
 import com.example.citronix.domain.Harvest;
@@ -16,54 +17,38 @@ import java.util.List;
 import java.util.UUID;
 
 @Service
+@RequiredArgsConstructor
 public class HarvestServiceImpl implements HarvestService {
 
     private final HarvestRepository harvestRepository;
     private final HarvestDetailRepository harvestDetailRepository;
     private final FieldRepository fieldRepository;
 
-    public HarvestServiceImpl(HarvestRepository harvestRepository,
-                              HarvestDetailRepository harvestDetailRepository,
-                              FieldRepository fieldRepository) {
-        this.harvestRepository = harvestRepository;
-        this.harvestDetailRepository = harvestDetailRepository;
-        this.fieldRepository = fieldRepository;
-    }
+
 
     @Override
-    public Harvest createHarvest(UUID fieldId, @NotEmpty List<HarvestDetail> harvestDetails, Season season, double totalQuantity) {
-        // Validate one harvest per season for a field
-        if (harvestRepository.existsByFieldIdAndSeason(fieldId, season)) {
-            throw new IllegalArgumentException("A harvest already exists for this field and season.");
-        }
+    public Harvest createHarvest(  List<HarvestDetail> harvestDetails, Season season, double totalQuantity) {
 
-        // Retrieve the field by its ID
-        Field field = fieldRepository.findById(fieldId)
-                .orElseThrow(() -> new IllegalArgumentException("Field not found"));
-
-        // Validate harvest details
         validateHarvestDetails(harvestDetails, season);
 
-        // Calculate the totalQuantity from harvestDetails
+
         double calculatedTotalQuantity = harvestDetails.stream()
                 .mapToDouble(HarvestDetail::getQuantity)
                 .sum();
 
-        // Create a new harvest object
+
         Harvest harvest = Harvest.builder()
-                .field(field)
                 .season(season)
-                .totalQuantity(calculatedTotalQuantity) // Use calculated total quantity
-                .harvestDate(LocalDate.now()) // Set the current date as the harvest date
+                .totalQuantity(calculatedTotalQuantity)
+                .harvestDate(LocalDate.now())
                 .build();
 
-        // Set the Harvest reference for each HarvestDetail
+
         harvestDetails.forEach(hd -> hd.setHarvest(harvest));
 
-        // Set the harvest details to the harvest object
+
         harvest.setHarvestDetails(harvestDetails);
 
-        // Save the harvest, which will cascade to HarvestDetails due to CascadeType.ALL
         harvestRepository.save(harvest);
 
         return harvest;

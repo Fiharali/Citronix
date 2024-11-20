@@ -12,6 +12,7 @@ import java.util.UUID;
 @NoArgsConstructor
 @AllArgsConstructor
 public class TreeResponseVM {
+    private UUID id;
     private int age;
     private double productivity;
     private UUID fieldId;

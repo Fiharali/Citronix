@@ -17,19 +17,12 @@ public interface HarvestMapper {
 
     HarvestMapper INSTANCE = Mappers.getMapper(HarvestMapper.class);
 
-    /**
-     * Convert Harvest entity to HarvestResponseVM (ViewModel)
-     */
-    @Mapping(target = "fieldId", source = "field.id")
     @Mapping(target = "harvestDetails", source = "harvestDetails")
     HarvestResponseVM harvestToHarvestResponseVM(Harvest harvest);
 
     List<HarvestResponseVM> harvestsToHarvestResponseVMs(List<Harvest> harvests);
 
-    /**
-     * Convert HarvestVM to Harvest entity
-     */
-    @Mapping(target = "field.id", source = "fieldId")
+
     @Mapping(target = "harvestDetails", source = "harvestDetails")
     @Mapping(target = "id", ignore = true)
     @Mapping(target = "harvestDate", ignore = true)
@@ -46,9 +39,6 @@ public interface HarvestMapper {
 
     List<HarvestDetail> harvestDetailVMsToHarvestDetails(List<HarvestDetailVM> harvestDetailVMs);
 
-    /**
-     * Convert HarvestDetail entity to HarvestDetailResponseVM (ViewModel)
-     */
     @Mapping(target = "treeId", source = "tree.id")
     @Mapping(target = "quantity", source = "quantity")
     HarvestDetailResponseVM harvestDetailToHarvestDetailResponseVM(HarvestDetail harvestDetail);
