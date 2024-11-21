@@ -23,11 +23,11 @@ public class Sale {
     private double quantity;
 
     @ManyToOne
-    @JoinColumn(name = "client_id", nullable = false)
+    @JoinColumn(name = "client_id")
     private Client client;
 
     @ManyToOne
-    @JoinColumn(name = "harvest_id", nullable = false)
+    @JoinColumn(name = "harvest_id")
     private Harvest harvest;
 
     @Transient

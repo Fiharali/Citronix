@@ -1,13 +1,18 @@
 package com.example.citronix.services.impl;
 
 import com.example.citronix.exceptions.ResourceNotFoundException;
+import com.example.citronix.services.FieldService;
+import com.example.citronix.services.HarvestService;
 import lombok.RequiredArgsConstructor;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.annotation.Lazy;
 import org.springframework.stereotype.Service;
 import com.example.citronix.domain.Field;
 import com.example.citronix.domain.Tree;
 import com.example.citronix.repositories.FieldRepository;
 import com.example.citronix.repositories.TreeRepository;
 import com.example.citronix.services.TreeService;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 import java.util.Optional;
@@ -18,24 +23,27 @@ import java.util.UUID;
 public class TreeServiceImpl implements TreeService {
 
     private final TreeRepository treeRepository;
-    private final FieldRepository fieldRepository;
+    private final FieldService fieldService;
+
+    @Autowired
+    @Lazy
+    private  HarvestService harvestService;
+
+
 
 
 
     @Override
     public Tree createTree(UUID fieldId, Tree tree) {
-        Field field = fieldRepository.findById(fieldId)
-
-                .orElseThrow(() -> new ResourceNotFoundException("Field not found"));
+        Field field = fieldService.findById(fieldId);
 
         int month = tree.getPlantingDate().getMonthValue();
         
         if (month < 3 || month > 5) {
             throw new IllegalArgumentException("Tree planting must be between March and May.");
         }
-        double totalFieldArea = fieldRepository.findById(fieldId)
-                .map(Field::getArea)
-                .orElseThrow(() -> new ResourceNotFoundException("Field not found"));
+        double totalFieldArea = fieldService.findById(fieldId).getArea();
+
 
         long numberOfTrees = treeRepository.countByFieldId(fieldId);
         double treeDensity = numberOfTrees / totalFieldArea;
@@ -63,8 +71,7 @@ public class TreeServiceImpl implements TreeService {
         }
 
         if (tree.getField() != null && !tree.getField().equals(existingTree.getField())) {
-            Field field = fieldRepository.findById(tree.getField().getId())
-                    .orElseThrow(() -> new IllegalArgumentException("Field not found"));
+            Field field = fieldService.findById(tree.getField().getId());
             existingTree.setField(field);
         }
 
@@ -101,5 +108,21 @@ public class TreeServiceImpl implements TreeService {
     @Override
     public List<Tree> getAllTrees() {
         return treeRepository.findAll();
+    }
+
+    @Override
+    @Transactional
+    public void deleteByFieldId(UUID fieldId) {
+
+        List<Tree> fields = treeRepository.findByFieldId(fieldId);
+
+        fields.stream()
+                .map(Tree::getId)
+                .forEach(treeRepository::deleteByFieldId);
+
+        fields.stream()
+                .map(Tree::getId)
+                .forEach(harvestService::deleteHarvestDetailsByTreeId);
+
     }
 }

@@ -83,4 +83,9 @@ public class HarvestServiceImpl implements HarvestService {
         }
         harvestRepository.deleteById(harvestId);
     }
+
+    @Override
+    public void deleteHarvestDetailsByTreeId(UUID treeId) {
+        harvestDetailRepository.deleteHarvestDetailsByTreeId(treeId);
+    }
 }

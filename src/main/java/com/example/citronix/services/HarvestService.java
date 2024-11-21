@@ -18,4 +18,6 @@ public interface HarvestService {
     Harvest getHarvestById(UUID harvestId);
 
     void deleteHarvest(UUID harvestId);
+
+    void deleteHarvestDetailsByTreeId(UUID treeId);
 }

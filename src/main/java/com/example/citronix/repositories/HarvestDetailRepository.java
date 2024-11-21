@@ -1,6 +1,7 @@
 package com.example.citronix.repositories;
 
 import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 import com.example.citronix.domain.HarvestDetail;
@@ -15,6 +16,10 @@ public interface HarvestDetailRepository extends JpaRepository<HarvestDetail, UU
     HarvestDetail findByTreeIdAndHarvestId(UUID treeId, UUID harvestId);
     @Query("SELECT COUNT(hd) > 0 FROM HarvestDetail hd WHERE hd.tree.id = :treeId AND hd.harvest.season = :season")
     boolean existsByTreeIdAndHarvestSeason(@Param("treeId") UUID treeId, @Param("season") Season season);
+
+    @Modifying
+    @Query("DELETE FROM HarvestDetail hd WHERE hd.tree.id = :treeId")
+    void deleteHarvestDetailsByTreeId(@Param("treeId") UUID treeId);
 
 
 }

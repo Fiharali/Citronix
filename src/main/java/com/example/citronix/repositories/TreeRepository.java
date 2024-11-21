@@ -12,4 +12,5 @@ public interface TreeRepository extends JpaRepository<Tree, UUID> {
 
     List<Tree> findByFieldId(UUID fieldId);
 
+    void deleteByFieldId(UUID fieldId);
 }

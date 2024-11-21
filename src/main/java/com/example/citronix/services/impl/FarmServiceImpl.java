@@ -3,6 +3,7 @@ package com.example.citronix.services.impl;
 import com.example.citronix.exceptions.ResourceDublicatedException;
 import com.example.citronix.exceptions.ResourceNotFoundException;
 import com.example.citronix.repositories.FarmSearchRepository;
+import com.example.citronix.services.FieldService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -11,6 +12,7 @@ import com.example.citronix.domain.Farm;
 import com.example.citronix.repositories.FarmRepository;
 import com.example.citronix.services.dto.FarmSearchDTO;
 import com.example.citronix.services.FarmService;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 import java.util.Optional;
@@ -22,6 +24,7 @@ public class FarmServiceImpl implements FarmService {
 
     private final FarmRepository farmRepository;
     private final FarmSearchRepository farmSearchRepository;
+    private final FieldService fieldService;
 
 
     @Override
@@ -63,9 +66,11 @@ public class FarmServiceImpl implements FarmService {
     }
 
     @Override
+    @Transactional
     public boolean deleteFarm(UUID id) {
         if (farmRepository.existsById(id)) {
 
+            fieldService.deleteFieldsByFarm(id);
             farmRepository.deleteById(id);
             return true;
         } else {

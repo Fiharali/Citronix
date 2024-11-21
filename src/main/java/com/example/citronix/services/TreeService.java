@@ -23,4 +23,6 @@ public interface TreeService {
     List<Tree> getTreesByField(UUID fieldId);
 
    List<Tree> getAllTrees();
+
+    void deleteByFieldId(UUID fieldId);
 }

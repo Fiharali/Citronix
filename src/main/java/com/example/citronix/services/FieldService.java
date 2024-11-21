@@ -18,4 +18,5 @@ public interface FieldService {
     Page<Field> findAll(Pageable pageable);
     Optional<Field> getFieldById(UUID fieldId);
     void deleteFieldsByFarm(UUID id);
+    Field findById(UUID fieldId);
 }
