@@ -49,8 +49,7 @@ public class FieldServiceImpl implements FieldService {
             throw new FarmFullException("Total area of fields must be strictly less than the farm's total area.");
         }
 
-
-        int maxTrees = (int) Math.floor(field.getArea() / 1000.0 * 10);
+        int maxTrees = (int) Math.floor(field.getArea() / 1000);
 
         field.setFarm(farm);
         field.setMaxTrees(maxTrees);
@@ -84,6 +83,7 @@ public class FieldServiceImpl implements FieldService {
     public List<Field> getFieldsByFarm(UUID farmId) {
         return fieldRepository.findByFarmId(farmId);
     }
+
     @Override
     public void deleteField(UUID fieldId) {
         if (!fieldRepository.existsById(fieldId)) {
