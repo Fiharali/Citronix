@@ -2,7 +2,10 @@
 
 
 # JIRA 
---https://alifiharr.atlassian.net/jira/software/projects/BIB/boards/5
+https://alifiharr.atlassian.net/jira/software/projects/BIB/boards/5
+
+#UML
+https://drive.google.com/file/d/1wcmQ3UGBsfAMw8w2U8GbT3SO5K1d2EpY/view?usp=sharing
 
 
 
