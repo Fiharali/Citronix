@@ -23,8 +23,6 @@ public class TreeController {
     private final TreeMapper treeMapper;
 
 
-
-
     @PostMapping
     public ResponseEntity<TreeResponseVM> save(@RequestBody @Valid TreeVM treeVM) {
         Tree tree = treeMapper.treeVMToTree(treeVM);
