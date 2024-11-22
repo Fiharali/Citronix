@@ -34,7 +34,7 @@ public class HarvestServiceImpl implements HarvestService {
     @Override
     public Harvest createHarvest( Harvest harvest) {
 
-        double totalQuantityOfTrees = validateHarvestDetailsAndGetTotal(harvest.getHarvestDetails(), harvest.getSeason());
+        double totalQuantityOfTrees = validateHarvestDetailsAndGetTotal(harvest.getHarvestDetails(), harvest.getSeason(), harvest.getHarvestDate());
 
         harvest.getHarvestDetails().forEach(hd -> hd.setHarvest(harvest));
 
@@ -42,7 +42,7 @@ public class HarvestServiceImpl implements HarvestService {
         return harvestRepository.save(harvest);
     }
 
-    private double validateHarvestDetailsAndGetTotal(List<HarvestDetail> harvestDetails, Season season) {
+    private double validateHarvestDetailsAndGetTotal(List<HarvestDetail> harvestDetails, Season season , LocalDate harvestDate) {
         double totalQuantityOfTrees = 0;
         for (HarvestDetail detail : harvestDetails) {
 
@@ -56,10 +56,11 @@ public class HarvestServiceImpl implements HarvestService {
                 throw new IllegalArgumentException("Tree " + detail.getTree().getId() + " is older than 20 years and cannot be harvested.");
             }
 
-            if (harvestDetailRepository.existsByTreeIdAndHarvestSeason(tree.get().getId(), season)) {
+            if (harvestDetailRepository.existsByTreeIdAndHarvestSeasonAndHarvestDate(tree.get().getId(), season,harvestDate)) {
                 throw new IllegalArgumentException("Tree " + detail.getTree().getId() + " is already included in another harvest for the same season.");
             }
 
+            detail.setQuantity(tree.get().getProductivity());
             totalQuantityOfTrees += tree.get().getProductivity();
         }
         return totalQuantityOfTrees;
@@ -82,5 +83,10 @@ public class HarvestServiceImpl implements HarvestService {
             throw new IllegalArgumentException("Harvest not found");
         }
         harvestRepository.deleteById(harvestId);
+    }
+
+    @Override
+    public void deleteHarvestDetailsByTreeId(UUID treeId) {
+        harvestDetailRepository.deleteHarvestDetailsByTreeId(treeId);
     }
 }

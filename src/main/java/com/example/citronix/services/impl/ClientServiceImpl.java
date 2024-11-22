@@ -58,6 +58,7 @@ public class ClientServiceImpl implements ClientService {
 
     @Override
     public void deleteClient(UUID clientId) {
+        //
         if (!clientRepository.existsById(clientId)) {
             throw new ResourceNotFoundException("Client not found");
         }

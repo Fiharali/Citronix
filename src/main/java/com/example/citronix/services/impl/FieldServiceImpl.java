@@ -3,7 +3,10 @@ package com.example.citronix.services.impl;
 import com.example.citronix.exceptions.FarmFullException;
 import com.example.citronix.exceptions.ResourceNotFoundException;
 import com.example.citronix.services.FarmService;
+import com.example.citronix.services.TreeService;
 import lombok.RequiredArgsConstructor;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.annotation.Lazy;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
@@ -12,6 +15,7 @@ import com.example.citronix.domain.Farm;
 import com.example.citronix.repositories.FieldRepository;
 import com.example.citronix.repositories.FarmRepository;
 import com.example.citronix.services.FieldService;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 import java.util.Optional;
@@ -22,7 +26,15 @@ import java.util.UUID;
 public class FieldServiceImpl implements FieldService {
 
     private final FieldRepository fieldRepository;
-    private final FarmService farmService;
+
+    @Autowired
+    @Lazy
+    private  TreeService treeService;
+
+    @Autowired
+    @Lazy
+    private  FarmService farmService;
+
 
 
 
@@ -85,10 +97,12 @@ public class FieldServiceImpl implements FieldService {
     }
 
     @Override
+    @Transactional
     public void deleteField(UUID fieldId) {
         if (!fieldRepository.existsById(fieldId)) {
             throw new IllegalArgumentException("Field not found with ID: " + fieldId);
         }
+        treeService.deleteByFieldId(fieldId);
         fieldRepository.deleteById(fieldId);
     }
 
@@ -106,8 +120,23 @@ public class FieldServiceImpl implements FieldService {
     }
 
     @Override
-    public void deleteFieldsByFarm(UUID id) {
-        fieldRepository.deleteByFarmId(id);
+    @Transactional
+    public void deleteFieldsByFarm(UUID farmId) {
+
+        List<Field> fields = fieldRepository.findByFarmId(farmId);
+
+        fields.stream()
+                .map(Field::getId)
+                .forEach(treeService::deleteByFieldId);
+
+        fieldRepository.deleteByFarmId(farmId);
+    }
+
+    @Override
+    public Field findById(UUID fieldId) {
+        return fieldRepository.findById(fieldId)
+                .orElseThrow(() -> new ResourceNotFoundException("Field not found with ID: " + fieldId));
+
     }
 
 }
