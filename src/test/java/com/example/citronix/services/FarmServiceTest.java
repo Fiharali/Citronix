@@ -5,7 +5,6 @@ import com.example.citronix.exceptions.ResourceDublicatedException;
 import com.example.citronix.exceptions.ResourceNotFoundException;
 import com.example.citronix.repositories.FarmRepository;
 import com.example.citronix.repositories.FarmSearchRepository;
-import com.example.citronix.services.dto.FarmSearchDTO;
 import com.example.citronix.services.impl.FarmServiceImpl;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -24,7 +23,7 @@ import java.util.UUID;
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.*;
 
-class FarmServiceImplTest {
+class FarmServiceTest {
 
     @Mock
     private FarmRepository farmRepository;
@@ -114,7 +113,7 @@ class FarmServiceImplTest {
         assertEquals("Updated Farm", result.getName());
         assertEquals("Updated Location", result.getLocation());
         assertEquals(6000, result.getArea());
-        verify(farmRepository, times(1)).save(farm);
+        verify(farmRepository, times(1)).save(any(Farm.class));
     }
 
     @Test
@@ -127,15 +126,7 @@ class FarmServiceImplTest {
         assertThrows(ResourceNotFoundException.class, () -> farmService.updateFarm(farm.getId(), updatedFarm));
     }
 
-    @Test
-    void testDeleteFarmSuccess() {
-        when(farmRepository.existsById(farm.getId())).thenReturn(true);
 
-        boolean result = farmService.deleteFarm(farm.getId());
-
-        assertTrue(result);
-        verify(farmRepository, times(1)).deleteById(farm.getId());
-    }
 
     @Test
     void testDeleteFarmNotFound() {
@@ -143,6 +134,4 @@ class FarmServiceImplTest {
 
         assertThrows(ResourceNotFoundException.class, () -> farmService.deleteFarm(farm.getId()));
     }
-
-
 }

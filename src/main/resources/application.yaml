@@ -4,6 +4,14 @@ spring:
       file: src/main/docker/compose.yaml
       enabled: true
       lifecycle-management: start_only
+
+
+  datasource:
+    driver-class-name: org.postgresql.Driver
+    url: jdbc:postgresql://localhost:5433/citronix
+    username: citronix
+    password: citronix
+
   jpa:
     properties:
       hibernate:
@@ -11,9 +19,11 @@ spring:
 
   liquibase:
     change-log: db/changelog/master.yaml
-    enabled: true
+    enabled: false
 
   autoconfigure:
     exclude: org.springframework.boot.autoconfigure.security.servlet.SecurityAutoConfiguration
 server:
   port: 8081
+
+
