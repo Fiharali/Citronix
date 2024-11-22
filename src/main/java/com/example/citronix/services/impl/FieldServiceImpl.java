@@ -97,10 +97,12 @@ public class FieldServiceImpl implements FieldService {
     }
 
     @Override
+    @Transactional
     public void deleteField(UUID fieldId) {
         if (!fieldRepository.existsById(fieldId)) {
             throw new IllegalArgumentException("Field not found with ID: " + fieldId);
         }
+        treeService.deleteByFieldId(fieldId);
         fieldRepository.deleteById(fieldId);
     }
 

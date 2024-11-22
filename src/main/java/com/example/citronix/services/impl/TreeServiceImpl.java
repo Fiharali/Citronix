@@ -9,7 +9,6 @@ import org.springframework.context.annotation.Lazy;
 import org.springframework.stereotype.Service;
 import com.example.citronix.domain.Field;
 import com.example.citronix.domain.Tree;
-import com.example.citronix.repositories.FieldRepository;
 import com.example.citronix.repositories.TreeRepository;
 import com.example.citronix.services.TreeService;
 import org.springframework.transaction.annotation.Transactional;
@@ -87,10 +86,12 @@ public class TreeServiceImpl implements TreeService {
     }
 
     @Override
+    @Transactional
     public void deleteTree(UUID treeId) {
         if (!treeRepository.existsById(treeId)) {
             throw new ResourceNotFoundException("Tree not found");
         }
+        harvestService.deleteHarvestDetailsByTreeId(treeId);
         treeRepository.deleteById(treeId);
     }
 
